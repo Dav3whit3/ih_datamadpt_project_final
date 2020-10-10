@@ -228,9 +228,7 @@ app.layout = html.Div(
     id="big-app-container",
     children=[
         build_banner(),
-
         #dcc.Interval(id="interval-component",interval=2 * 1000,  n_intervals=50, disabled=True,),
-
         html.Div(
             id="app-container",
             children=[
