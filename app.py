@@ -5,8 +5,10 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 import dash_daq as daq
-
+import webbrowser
 import pandas as pd
+from Functions import API_data_extraction as aq
+import dash_table
 
 
 app = dash.Dash(
@@ -15,6 +17,15 @@ app = dash.Dash(
 )
 server = app.server
 app.config["suppress_callback_exceptions"] = True
+
+'''
+summoner_info = get_summoner_info(summoner, key)
+match_list = get_matchlist(accountid, key)
+players_info = get_players_info(match_info)
+timeline = get_match_timeline(4834424471)
+frames = participant_frames(timeline)
+events = get_events(timeline)
+'''
 
 
 def build_banner():
@@ -115,17 +126,29 @@ def build_quick_stats_panel():
         children=[
             html.Div(
                 id="card-1",
+                style={"display": "inline-block"},
                 children=[
                     html.P("User info"),
-                    daq.LEDDisplay(
-                        id="operator-led",
-                        value="1704",
-                        color="#92e0d3",
-                        backgroundColor="#1e2130",
-                        size=50,
+                    dcc.Input(
+                        id="api_key",
+                        placeholder="input api key",
+                        type='text',
+                        value="RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa",
+                        size="15"
                     ),
+                    dcc.Input(
+                        id="summoner_name",
+                        placeholder="input summoner name",
+                        type='text',
+                        value="Saikki kusuo",
+                        size="15"
+                    ),
+                    html.Div(children=[html.Br()]),
+                    html.Button('Submit', id='submit-val', style={"text-align": "center"}),
                 ],
             ),
+
+            dcc.Loading(children=html.Div(id="user_info_container")),
             html.Div(
                 id="card-2",
                 children=[
@@ -275,6 +298,26 @@ def render_tab_content(tab_switch,
             )
 
 
+@app.callback(
+    Output("user_info_container", "children"),
+    [Input("submit-val", "n_clicks")],
+    [State("api_key", "value"),
+     State("summoner_name", "value")]
+)
+def update_user_info(n_clicks, input1, input2):
+    return dash_table.DataTable(
+        columns=[{"name": "apikey", "id": "api_key"}, {"name": "summoner name", "id": "summoner_name"}],
+        data=[{}],
+        style_table={'overflowX': 'auto'},
+        filter_action="native",
+        page_size=5,
+        style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
+        style_as_list_view=False,
+        style_header={"background-color": "#1f2536", "padding": "0px 5px"},
+    )
+
+
 # Running the server
 if __name__ == "__main__":
+    #launch = webbrowser.open_new_tab('http://127.0.0.1:8050/')
     app.run_server(debug=True, port=8050)
