@@ -2,20 +2,32 @@ import requests
 import pandas as pd
 
 
+def get_summoner_info(summoner_name, apikey):
+    # This function takes the summoner name and the API Key
+    # and retrieves its account id
+    url = f'https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}'
+    html = requests.get(url,
+                        params={'api_key': apikey})
+    json = html.json()
+    df = pd.DataFrame(json, index=[0])
+
+    return df
+
+
 def get_matchlist(accountid, api):
     url = f'https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/{accountid}'
     html = requests.get(url,
-                        params={'api_key': key})
+                        params={'api_key': api})
     json = html.json()
     df = pd.DataFrame(json['matches'])
 
     return df
 
 
-def get_match_info(matchid):
+def get_match_info(matchid, api):
     url = f'https://euw1.api.riotgames.com/lol/match/v4/matches/{matchid}'
     html = requests.get(url,
-                        params={'api_key': key})
+                        params={'api_key': api})
     json = html.json()
 
     return json
@@ -40,10 +52,10 @@ def get_players_info(json):
     return players
 
 
-def get_match_timeline(matchid):
+def get_match_timeline(matchid, api):
     url = f'https://euw1.api.riotgames.com/lol/match/v4/timelines/by-match/{matchid}'
     html = requests.get(url,
-                        params={'api_key': key})
+                        params={'api_key': api})
     json = html.json()
 
     return json
@@ -72,6 +84,7 @@ def participant_frames(json):
             # 'dominionScore','teamScore',
             ]
     all_frames = all_frames[cols]
+    all_frames['timestamp'] = (all_frames['timestamp'] / 60000).astype('int')
 
     return all_frames
 

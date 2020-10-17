@@ -18,14 +18,19 @@ app = dash.Dash(
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
-'''
-summoner_info = get_summoner_info(summoner, key)
-match_list = get_matchlist(accountid, key)
-players_info = get_players_info(match_info)
-timeline = get_match_timeline(4834424471)
-frames = participant_frames(timeline)
-events = get_events(timeline)
-'''
+
+summoner = 'Saikki kusuo'
+key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
+
+
+summoner_info = aq.get_summoner_info(summoner, key)
+accountid = summoner_info['accountId'][0]
+match_list = aq.get_matchlist(accountid, key)
+match_info = aq.get_match_info(4834424471, key)
+players_info = aq.get_players_info(match_info)
+timeline = aq.get_match_timeline(4834424471, key)
+frames = aq.participant_frames(timeline)
+events = aq.get_events(timeline)
 
 
 def build_banner():
@@ -136,6 +141,7 @@ def build_quick_stats_panel():
                         value="RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa",
                         size="15"
                     ),
+
                     dcc.Input(
                         id="summoner_name",
                         placeholder="input summoner name",
@@ -305,6 +311,7 @@ def render_tab_content(tab_switch,
      State("summoner_name", "value")]
 )
 def update_user_info(n_clicks, input1, input2):
+
     return dash_table.DataTable(
         columns=[{"name": "apikey", "id": "api_key"}, {"name": "summoner name", "id": "summoner_name"}],
         data=[{}],
