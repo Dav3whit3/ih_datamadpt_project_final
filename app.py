@@ -6,9 +6,7 @@ import dash_table
 import plotly.graph_objs as go
 import dash_daq as daq
 import webbrowser
-import pandas as pd
 from Functions import API_data_extraction as aq
-import dash_table
 
 
 app = dash.Dash(
@@ -157,19 +155,35 @@ def build_quick_stats_panel():
             dcc.Loading(children=html.Div(id="user_info_container")),
             html.Div(
                 id="card-2",
+                style={"display": "inline-block"},
                 children=[
                     html.P("Match Timeline"),
                     daq.Gauge(
                         id="progress-gauge",
-                        max=5,
-                        min=0,
+                        max=frames['timestamp'].max(),
+                        min=frames['timestamp'].min(),
+                        units="Min",
+                        size=30,
+                        value=275,
                         showCurrentValue=True,  # default size 200 pixel
+                    ),
+                    dcc.Slider(
+                        id="gauge-slider",
+                        max=frames['timestamp'].max(),
+                        min=frames['timestamp'].min(),
+                        # step=None,
+
+                        vertical=False,
+                        disabled=False,
+                        updatemode='drag'
                     ),
                 ],
             ),
             html.Div(
                 id="utility-card",
-                children=[daq.StopButton(id="stop-button", size=160, n_clicks=0)],
+                children=[
+
+                    daq.StopButton(id="stop-button", size=160, n_clicks=0)],
             ),
         ],
     )
@@ -322,6 +336,14 @@ def update_user_info(n_clicks, input1, input2):
         style_as_list_view=False,
         style_header={"background-color": "#1f2536", "padding": "0px 5px"},
     )
+
+
+@app.callback(
+    Output("progress-gauge", "value"),
+    [Input("gauge-slider", "value")]
+)
+def update_gauge(value):
+    return value
 
 
 # Running the server
