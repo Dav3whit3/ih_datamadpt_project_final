@@ -165,6 +165,7 @@ def build_quick_stats_panel():
                         children=[
                             dcc.Dropdown(
                                 id="match-list",
+                                placeholder="Select a match",
                                 options=[{'label': f'{match}', 'value': f'{match}'} for match in
                                          list(match_list['gameId'].head(10))],
                             )
