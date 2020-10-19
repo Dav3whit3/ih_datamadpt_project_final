@@ -8,7 +8,6 @@ import dash_daq as daq
 import webbrowser
 from Functions import API_data_extraction as aq
 
-
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
@@ -16,10 +15,8 @@ app = dash.Dash(
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
-
 summoner = 'Saikki kusuo'
 key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
-
 
 summoner_info = aq.get_summoner_info(summoner, key)
 accountid = summoner_info['accountId'][0]
@@ -125,11 +122,12 @@ def generate_modal():
 def build_quick_stats_panel():
     return html.Div(
         id="quick-stats",
+        style={"padding-top": "0"},
         className="row",
         children=[
             html.Div(
                 id="card-1",
-                style={"display": "inline-block"},
+                style={"display": "inline-block", "text-align": "center", "margin-bottom": "10px"},
                 children=[
                     html.P("User info"),
                     dcc.Input(
@@ -137,7 +135,8 @@ def build_quick_stats_panel():
                         placeholder="input api key",
                         type='text',
                         value="RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa",
-                        size="15"
+                        size="15",
+                        style={"width": "100%"}
                     ),
 
                     dcc.Input(
@@ -145,14 +144,35 @@ def build_quick_stats_panel():
                         placeholder="input summoner name",
                         type='text',
                         value="Saikki kusuo",
-                        size="15"
+                        size="15",
+                        style={"width": "100%", "margin-top": "10px"}
                     ),
-                    html.Div(children=[html.Br()]),
-                    html.Button('Submit', id='submit-val', style={"text-align": "center"}),
+                    html.Button('Submit',
+                                id='submit-val',
+                                style={"text-align": "center",
+                                       "margin-bottom": "10px",
+                                       "color": "#ffffff",
+                                       "margin-top": "10px",
+                                       "margin-left": "20%",
+                                       "margin-right": "20%"}),
+                    html.Div(
+                        style={"width": "100%", "display": "inline-block", "text-align": "center"},
+                        children=[
+                            dcc.Dropdown(
+                                id="match-list",
+                                options=[{'label': f'{match}', 'value': f'{match}'} for match in
+                                         list(match_list['gameId'].head(10))],
+                            )
+                        ]
+                    )
                 ],
             ),
-
-            dcc.Loading(children=html.Div(id="user_info_container")),
+            html.Div(
+                style={"width": "100%", "display": "inline-block", "text-align": "center"},
+                children=[
+                    dcc.Loading(children=html.Div(id="user_info_container")),
+                ]
+            ),
             html.Div(
                 id="card-2",
                 style={"display": "inline-block"},
@@ -203,28 +223,27 @@ def build_top_panel():
                 id="metric-summary-session",
                 className="eight columns",
                 children=[
-                    generate_section_banner("Players info"),
+                    generate_section_banner("Players stats"),
                     html.Div(
                         id="metric-div",
                         children=[
-                            #generate_metric_list_header(),
+                            # generate_metric_list_header(),
                             html.Div(
                                 id="metric-rows",
                                 children=[
-                                    #generate_metric_row_helper(stopped_interval, 1),
+                                    # generate_metric_row_helper(stopped_interval, 1),
                                 ],
                             ),
                         ],
                     ),
                 ],
             ),
-            # Piechart
             html.Div(
                 id="ooc-piechart-outer",
                 className="four columns",
                 children=[
-                    generate_section_banner("Gráfico"),
-                    #generate_piechart(),
+                    generate_section_banner("Stats ranking"),
+                    # generate_piechart(),
                 ],
             ),
         ],
@@ -236,7 +255,7 @@ def build_chart_panel():
         id="control-chart-container",
         className="twelve columns",
         children=[
-            generate_section_banner("Gold progress chart"),
+            generate_section_banner("Gold progress"),
             dcc.Graph(
                 id="control-chart-live",
                 figure=go.Figure(
@@ -271,7 +290,7 @@ app.layout = html.Div(
     id="big-app-container",
     children=[
         build_banner(),
-        #dcc.Interval(id="interval-component",interval=2 * 1000,  n_intervals=50, disabled=True,),
+        # dcc.Interval(id="interval-component",interval=2 * 1000,  n_intervals=50, disabled=True,),
         html.Div(
             id="app-container",
             children=[
@@ -280,7 +299,7 @@ app.layout = html.Div(
                 html.Div(id="app-content"),
             ],
         ),
-        #dcc.Store(id="value-setter-store", data=init_value_setter_store()),
+        # dcc.Store(id="value-setter-store", data=init_value_setter_store()),
         dcc.Store(id="n-interval-stage", data=50),
         generate_modal(),
     ],
@@ -289,13 +308,13 @@ app.layout = html.Div(
 
 @app.callback(
     [Output("app-content", "children"),
-     #Output("interval-component", "n_intervals")
+     # Output("interval-component", "n_intervals")
      ],
     [Input("app-tabs", "value")],
-    #[State("n-interval-stage", "data")]
+    # [State("n-interval-stage", "data")]
 )
 def render_tab_content(tab_switch,
-                       #interval_component
+                       # interval_component
                        ):
     if tab_switch == "tab1":
         return [html.Div(
@@ -314,8 +333,8 @@ def render_tab_content(tab_switch,
                 ),
             ],
         ),
-        #interval_component
-            )
+        # interval_component
+    )
 
 
 @app.callback(
@@ -325,14 +344,13 @@ def render_tab_content(tab_switch,
      State("summoner_name", "value")]
 )
 def update_user_info(n_clicks, input1, input2):
-
     return dash_table.DataTable(
         columns=[{"name": "apikey", "id": "api_key"}, {"name": "summoner name", "id": "summoner_name"}],
         data=[{}],
         style_table={'overflowX': 'auto'},
         filter_action="native",
         page_size=5,
-        style_cell={"background-color": "#242a3b", "color": "#7b7d8d"},
+        style_cell={"background-color": "#242a3b", "color": "#ffffff", "textAlign": "left"},
         style_as_list_view=False,
         style_header={"background-color": "#1f2536", "padding": "0px 5px"},
     )
@@ -348,5 +366,5 @@ def update_gauge(value):
 
 # Running the server
 if __name__ == "__main__":
-    #launch = webbrowser.open_new_tab('http://127.0.0.1:8050/')
+    # launch = webbrowser.open_new_tab('http://127.0.0.1:8050/')
     app.run_server(debug=True, port=8050)
