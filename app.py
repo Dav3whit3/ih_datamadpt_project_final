@@ -158,7 +158,9 @@ def build_quick_stats_panel():
                                        "margin-left": "20%",
                                        "margin-right": "20%"}),
                     html.Div(
-                        style={"width": "100%", "display": "inline-block", "text-align": "center"},
+                        style={"width": "100%",
+                               "display": "inline-block",
+                               "text-align": "center"},
                         children=[
                             dcc.Dropdown(
                                 id="match-list",
@@ -179,9 +181,31 @@ def build_quick_stats_panel():
             ),
             html.Div(
                 id="card-2",
-                style={"display": "inline-block"},
+                style={"display": "inline-block",
+                       "text-align": "center",
+                       "margin-bottom": "10px",
+                       "margin-top": "25px"},
                 children=[
                     html.P("Match Timeline"),
+                    daq.StopButton(id="stop-button",
+                                   size=160,
+                                   n_clicks=0,
+                                   style={"text-align": "center",
+                                          "margin-bottom": "10px",
+                                          "color": "#ffffff",
+                                          "margin-top": "10px",
+                                          "margin-left": "30%",
+                                          "margin-right": "auto"}
+                                   ),
+                    dcc.Slider(
+                        id="gauge-slider",
+                        max=frames['timestamp'].max(),
+                        min=frames['timestamp'].min(),
+                        # step=None,
+                        vertical=False,
+                        disabled=False,
+                        updatemode='drag'
+                    ),
                     daq.Gauge(
                         id="progress-gauge",
                         max=frames['timestamp'].max(),
@@ -191,23 +215,7 @@ def build_quick_stats_panel():
                         value=275,
                         showCurrentValue=True,  # default size 200 pixel
                     ),
-                    dcc.Slider(
-                        id="gauge-slider",
-                        max=frames['timestamp'].max(),
-                        min=frames['timestamp'].min(),
-                        # step=None,
-
-                        vertical=False,
-                        disabled=False,
-                        updatemode='drag'
-                    ),
                 ],
-            ),
-            html.Div(
-                id="utility-card",
-                children=[
-
-                    daq.StopButton(id="stop-button", size=160, n_clicks=0)],
             ),
         ],
     )
@@ -354,9 +362,12 @@ def update_user_info(n_clicks, input1, input2):
         style_table={'overflowX': 'auto'},
         filter_action="native",
         page_size=5,
-        style_cell={"background-color": "#242a3b", "color": "#ffffff", "textAlign": "left"},
+        style_cell={"background-color": "#242a3b",
+                    "color": "#ffffff",
+                    "textAlign": "left"},
         style_as_list_view=False,
-        style_header={"background-color": "#1f2536", "padding": "0px 5px"},
+        style_header={"background-color": "#1f2536",
+                      "padding": "0px 5px"},
     )
 
 
