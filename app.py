@@ -24,8 +24,9 @@ match_list = aq.get_matchlist(accountid, key)
 match_info = aq.get_match_info(4834424471, key)
 players_info = aq.get_players_info(match_info)
 timeline = aq.get_match_timeline(4834424471, key)
-frames = aq.participant_frames(timeline)
+frames = aq.participant_frames(timeline, players_info)
 events = aq.get_events(timeline)
+golddiff = aq.gold_diff(frames)
 
 
 def build_banner():

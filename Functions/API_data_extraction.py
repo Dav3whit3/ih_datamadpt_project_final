@@ -61,7 +61,7 @@ def get_match_timeline(matchid, api):
     return json
 
 
-def participant_frames(json):
+def participant_frames(json, playersinfo):
     ## Extracting frames from json
 
     all_frames = pd.DataFrame()
@@ -84,9 +84,12 @@ def participant_frames(json):
             # 'dominionScore','teamScore',
             ]
     all_frames = all_frames[cols]
-    all_frames['timestamp'] = (all_frames['timestamp'] / 60000).astype('int')
 
-    return all_frames
+    teams = playersinfo[['participantId', 'teamId']]
+    frames = pd.merge(all_frames, teams, on='participantId')
+    frames['timestamp'] = (frames['timestamp'] / 60000).astype('int')
+
+    return frames
 
 
 def get_events(json):
@@ -101,3 +104,17 @@ def get_events(json):
     events.drop(columns='position', inplace=True)
 
     return events
+
+
+def gold_diff(frames):
+    data = frames.groupby(['timestamp', 'teamId']).sum().reset_index()[['timestamp', 'teamId', 'totalGold']]
+
+    team100gold = data[data['teamId'] == 100]
+    team100gold.rename(columns={"totalGold": "team100gold"}, inplace=True)
+    team200gold = data[data['teamId'] == 200][['timestamp', 'teamId', 'totalGold']]
+    team200gold.rename(columns={"totalGold": "team200gold"}, inplace=True)
+
+    golddiff = pd.merge(team100gold, team200gold, on='timestamp')
+    golddiff['golddiff'] = golddiff['team100gold'] - golddiff['team200gold']
+
+    return golddiff
