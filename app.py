@@ -127,7 +127,9 @@ def build_quick_stats_panel():
         children=[
             html.Div(
                 id="card-1",
-                style={"display": "inline-block", "text-align": "center", "margin-bottom": "10px"},
+                style={"display": "inline-block",
+                       "text-align": "center",
+                       "margin-bottom": "10px"},
                 children=[
                     html.P("User info"),
                     dcc.Input(
@@ -168,7 +170,9 @@ def build_quick_stats_panel():
                 ],
             ),
             html.Div(
-                style={"width": "100%", "display": "inline-block", "text-align": "center"},
+                style={"width": "100%",
+                       "display": "inline-block",
+                       "text-align": "center"},
                 children=[
                     dcc.Loading(children=html.Div(id="user_info_container")),
                 ]
