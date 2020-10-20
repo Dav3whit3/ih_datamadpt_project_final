@@ -117,4 +117,7 @@ def gold_diff(frames):
     golddiff = pd.merge(team100gold, team200gold, on='timestamp')
     golddiff['golddiff'] = golddiff['team100gold'] - golddiff['team200gold']
 
+    golddiff['team100golddiff'] = [a if a > 0 else 0 for a in golddiff['golddiff']]
+    golddiff['team200golddiff'] = [a if a < 0 else 0 for a in golddiff['golddiff']]
+
     return golddiff

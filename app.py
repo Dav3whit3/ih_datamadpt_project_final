@@ -267,11 +267,11 @@ def build_top_panel():
 def build_chart_panel():
     return html.Div(
         id="control-chart-container",
-        className="twelve columns",
+        #className="twelve columns",
         children=[
             generate_section_banner("Gold progress"),
             dcc.Graph(
-                id="control-chart-live",
+                id="gold-progress",
                 figure=go.Figure(
                     {
                         "data": [
@@ -379,6 +379,60 @@ def update_user_info(n_clicks, input1, input2):
 )
 def update_gauge(value):
     return value
+
+
+@app.callback(
+    Output("gold-progress", "figure"),
+    [Input("gauge-slider", "value")]
+)
+def update_gold_progress_chart(min):
+    df = golddiff.copy()
+    df = df[df['timestamp'] == min]
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=golddiff['timestamp'],
+                             y=golddiff['team100golddiff'],
+                             fill='tozeroy',
+                             line_color='#229954',
+                             marker=dict(color="rgba(210, 77, 87, 0.7)", symbol="square", size=11)
+                             )
+                  )
+
+    fig.add_trace(go.Scatter(x=golddiff['timestamp'],
+                             y=golddiff['team200golddiff'],
+                             fill='tozeroy',
+                             line_color='#E74C3C'
+
+                             )
+                  )
+    fig["layout"] = dict(
+        margin=dict(t=40),
+        hovermode="closest",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        legend={"font": {"color": "darkgray"}, "orientation": "h", "x": 0, "y": 1.1},
+        font={"color": "darkgray"},
+        showlegend=True,
+        autosize=True,
+        xaxis={
+            "zeroline": False,
+            "showgrid": False,
+            "title": "Time",
+            "showline": False,
+            "domain": [0, 0.8],
+            "titlefont": {"color": "darkgray"},
+            "autorange": True
+        },
+        yaxis={
+            "title": "Gold",
+            "showgrid": False,
+            "showline": False,
+            "zeroline": False,
+            "autorange": True,
+            "titlefont": {"color": "darkgray"},
+        })
+
+    return fig
 
 
 # Running the server
