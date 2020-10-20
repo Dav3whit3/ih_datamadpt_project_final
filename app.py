@@ -385,21 +385,21 @@ def update_gauge(value):
     Output("gold-progress", "figure"),
     [Input("gauge-slider", "value")]
 )
-def update_gold_progress_chart(min):
+def update_gold_progress_chart(value):
     df = golddiff.copy()
-    df = df[df['timestamp'] == min]
+    df = df[df['timestamp'] <= value]
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=golddiff['timestamp'],
-                             y=golddiff['team100golddiff'],
+    fig.add_trace(go.Scatter(x=df['timestamp'],
+                             y=df['team100golddiff'],
                              fill='tozeroy',
                              line_color='#229954',
                              marker=dict(color="rgba(210, 77, 87, 0.7)", symbol="square", size=11)
                              )
                   )
 
-    fig.add_trace(go.Scatter(x=golddiff['timestamp'],
-                             y=golddiff['team200golddiff'],
+    fig.add_trace(go.Scatter(x=df['timestamp'],
+                             y=df['team200golddiff'],
                              fill='tozeroy',
                              line_color='#E74C3C'
 
