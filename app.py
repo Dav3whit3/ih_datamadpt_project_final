@@ -214,7 +214,7 @@ def build_quick_stats_panel():
                         min=frames['timestamp'].min(),
                         units="Min",
                         size=30,
-                        value=275,
+                        value=5,
                         showCurrentValue=True,  # default size 200 pixel
                     ),
                 ],
@@ -253,11 +253,17 @@ def build_top_panel():
                 ],
             ),
             html.Div(
-                id="ooc-piechart-outer",
+                id="stats-ranking",
                 className="four columns",
+                style={"display": "block"},
                 children=[
-                    generate_section_banner("Stats ranking"),
-                    # generate_piechart(),
+                   html.Div(className="section-banner",
+                            children=["Stats ranking",
+                                      ]
+                            ),
+                   dcc.Dropdown(
+                        # style={"width": "40%"}
+                    )
                 ],
             ),
         ],
@@ -358,16 +364,18 @@ def render_tab_content(tab_switch,
      State("summoner_name", "value")]
 )
 def update_user_info(n_clicks, input1, input2):
+    cols = ['Summoner name', 'Match date', 'Team']
+
     return dash_table.DataTable(
-        columns=[{"name": "apikey", "id": "api_key"}, {"name": "summoner name", "id": "summoner_name"}],
+        columns=[{"name": f"{name}", "id": f"{name}"} for name in cols],
         data=[{}],
         style_table={'overflowX': 'auto'},
         filter_action="native",
-        page_size=5,
+        page_size=1,
         style_cell={"background-color": "#242a3b",
                     "color": "#ffffff",
-                    "textAlign": "left"},
-        style_as_list_view=False,
+                    "textAlign": "center"},
+        style_as_list_view=True,
         style_header={"background-color": "#1f2536",
                       "padding": "0px 5px"},
     )
@@ -393,20 +401,22 @@ def update_gold_progress_chart(value):
     fig.add_trace(go.Scatter(x=df['timestamp'],
                              y=df['team100golddiff'],
                              fill='tozeroy',
-                             line_color='#229954',
-                             marker=dict(color="rgba(210, 77, 87, 0.7)", symbol="square", size=11)
+                             name='Blue team',
+                             line_color='#2E86C1',
+                             mode='none'
                              )
                   )
 
     fig.add_trace(go.Scatter(x=df['timestamp'],
                              y=df['team200golddiff'],
                              fill='tozeroy',
-                             line_color='#E74C3C'
-
+                             name="Red team",
+                             line_color='#E74C3C',
+                             mode='none'
                              )
                   )
     fig["layout"] = dict(
-        margin=dict(t=40),
+        margin=dict(t=40, r=0, autoexpand=True),
         hovermode="closest",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -419,7 +429,6 @@ def update_gold_progress_chart(value):
             "showgrid": False,
             "title": "Time",
             "showline": False,
-            "domain": [0, 0.8],
             "titlefont": {"color": "darkgray"},
             "autorange": True
         },
