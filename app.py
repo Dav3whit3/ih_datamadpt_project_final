@@ -213,6 +213,7 @@ def build_quick_stats_panel():
                         max=frames['timestamp'].max(),
                         min=frames['timestamp'].min(),
                         units="Min",
+                        color={"gradient": True, "ranges":{"green":[0,10],"yellow":[10,20],"red":[20,40]}},
                         size=30,
                         value=5,
                         showCurrentValue=True,  # default size 200 pixel
