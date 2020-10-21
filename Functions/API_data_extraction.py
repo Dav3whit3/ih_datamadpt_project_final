@@ -15,15 +15,18 @@ def get_summoner_info(summoner_name, apikey):
     return df
 
 
-def get_matchlist(accountid, api, champions):
+def get_matchlist(accountid, api, champions, queues):
     url = f'https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/{accountid}'
     html = requests.get(url,
                         params={'api_key': api})
     json = html.json()
-
     df = pd.DataFrame(json['matches'])
     df['timestamp'] = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x / 1000).strftime('%c'))
     df = df.merge(champions, left_on='champion', right_on='champion', how='left')
+    df = df.merge(queues, left_on='queue', right_on='queue', how='left')
+
+    df.drop(['champion', 'queue'], axis=1, inplace=True)
+    df.rename({'name': 'champion', 'queue_type': 'queue'})
 
     return df
 
@@ -125,3 +128,35 @@ def gold_diff(frames):
     golddiff['team200golddiff'] = [a if a < 0 else 0 for a in golddiff['golddiff']]
 
     return golddiff
+
+
+def championsid(api):
+    url = 'http://ddragon.leagueoflegends.com/cdn/10.21.1/data/en_US/champion.json'
+
+    html = requests.get(url,
+                        params={'api_key': api})
+    json = html.json()
+
+    champions = pd.DataFrame()
+    for champ in json['data'].keys():
+        df = pd.DataFrame({'name': json['data'][f'{champ}']['id'], 'champion': json['data'][f'{champ}']['key']},
+                          index=[0])
+        champions = champions.append(df, ignore_index=True)
+    champions['champion'] = champions['champion'].astype('int')
+
+    return champions
+
+
+def get_queuesid(api):
+    url = 'http://static.developer.riotgames.com/docs/lol/queues.json'
+    html = requests.get(url,
+                        params={'api_key': api})
+    json = html.json()
+
+    queuesid = pd.DataFrame()
+    for queue in json:
+        df = pd.DataFrame({'queue': queue['queueId'], 'queue_type': queue['description']},
+                          index=[0])
+        queuesid = queuesid.append(df, ignore_index=True)
+
+    return queuesid

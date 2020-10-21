@@ -20,7 +20,9 @@ key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
 
 summoner_info = aq.get_summoner_info(summoner, key)
 accountid = summoner_info['accountId'][0]
-match_list = aq.get_matchlist(accountid, key)
+champions = aq.championsid(key)
+queues = aq.get_queuesid(key)
+match_list = aq.get_matchlist(accountid, key, champions, queues)
 match_info = aq.get_match_info(4834424471, key)
 players_info = aq.get_players_info(match_info)
 timeline = aq.get_match_timeline(4834424471, key)
@@ -356,13 +358,15 @@ def render_tab_content(tab_switch,
     [State("summoner_name", "value")]
 )
 def update_user_info(n_clicks, input1):
-    cols = ['Summoner name', 'Match date', 'Team']
+    cols = ['Summoner name', 'Match date', 'Team', 'champion']
 
     return dash_table.DataTable(
         columns=[{"name": f"{name}", "id": f"{name}"} for name in cols],
         data=[{}],
         style_table={'overflowX': 'auto'},
-        filter_action="native",
+        style_data={'color': '#ffffff'},
+        style_filter={'color': '#ffffff'},
+        #filter_action="native",
         page_size=1,
         style_cell={"background-color": "#242a3b",
                     "color": "#ffffff",
@@ -395,7 +399,7 @@ def update_gold_progress_chart(value):
                              fill='tozeroy',
                              name='Blue team',
                              line_color='#2E86C1',
-                             mode='none'
+                             #mode='none'
                              )
                   )
 
@@ -404,7 +408,7 @@ def update_gold_progress_chart(value):
                              fill='tozeroy',
                              name="Red team",
                              line_color='#E74C3C',
-                             mode='none'
+                             #mode='none'
                              )
                   )
     fig["layout"] = dict(
