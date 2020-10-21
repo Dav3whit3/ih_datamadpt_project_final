@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from datetime import datetime
 
 
 def get_summoner_info(summoner_name, apikey):
@@ -14,12 +15,15 @@ def get_summoner_info(summoner_name, apikey):
     return df
 
 
-def get_matchlist(accountid, api):
+def get_matchlist(accountid, api, champions):
     url = f'https://euw1.api.riotgames.com/lol/match/v4/matchlists/by-account/{accountid}'
     html = requests.get(url,
                         params={'api_key': api})
     json = html.json()
+
     df = pd.DataFrame(json['matches'])
+    df['timestamp'] = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x / 1000).strftime('%c'))
+    df = df.merge(champions, left_on='champion', right_on='champion', how='left')
 
     return df
 

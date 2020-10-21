@@ -133,14 +133,6 @@ def build_quick_stats_panel():
                        "margin-bottom": "10px"},
                 children=[
                     html.P("User info"),
-                    dcc.Input(
-                        id="api_key",
-                        placeholder="input api key",
-                        type='text',
-                        value="RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa",
-                        size="15",
-                        style={"width": "100%"}
-                    ),
 
                     dcc.Input(
                         id="summoner_name",
@@ -196,7 +188,7 @@ def build_quick_stats_panel():
                                           "margin-bottom": "10px",
                                           "color": "#ffffff",
                                           "margin-top": "10px",
-                                          "margin-left": "30%",
+                                          "margin-left": "35%",
                                           "margin-right": "auto"}
                                    ),
                     dcc.Slider(
@@ -361,10 +353,9 @@ def render_tab_content(tab_switch,
 @app.callback(
     Output("user_info_container", "children"),
     [Input("submit-val", "n_clicks")],
-    [State("api_key", "value"),
-     State("summoner_name", "value")]
+    [State("summoner_name", "value")]
 )
-def update_user_info(n_clicks, input1, input2):
+def update_user_info(n_clicks, input1):
     cols = ['Summoner name', 'Match date', 'Team']
 
     return dash_table.DataTable(
@@ -417,7 +408,7 @@ def update_gold_progress_chart(value):
                              )
                   )
     fig["layout"] = dict(
-        margin=dict(t=40, r=0, autoexpand=True),
+        margin=dict(t=40, r=40, autoexpand=True),
         hovermode="closest",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -428,7 +419,7 @@ def update_gold_progress_chart(value):
         xaxis={
             "zeroline": False,
             "showgrid": False,
-            "title": "Time",
+            "title": "Time (mins)",
             "showline": False,
             "titlefont": {"color": "darkgray"},
             "autorange": True
