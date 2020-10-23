@@ -142,10 +142,20 @@ def build_quick_stats_panel():
                                        "margin-top": "10px",
                                        "margin-left": "20%",
                                        "margin-right": "20%"}),
+
+                ],
+            ),
+            html.Div(
+                style={"width": "100%",
+                       "display": "inline-block",
+                       "text-align": "center"},
+                children=[
+                    dcc.Loading(children=html.Div(id="user_info_container")),
                     html.Div(
                         style={"width": "100%",
                                "display": "inline-block",
-                               "text-align": "center"},
+                               "text-align": "center",
+                               "margin-top": "30px"},
                         children=[
                             dcc.Dropdown(
                                 id="match-list",
@@ -155,14 +165,7 @@ def build_quick_stats_panel():
                             )
                         ]
                     )
-                ],
-            ),
-            html.Div(
-                style={"width": "100%",
-                       "display": "inline-block",
-                       "text-align": "center"},
-                children=[
-                    dcc.Loading(children=html.Div(id="user_info_container")),
+                    ,
                 ]
             ),
             html.Div(
