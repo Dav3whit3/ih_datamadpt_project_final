@@ -94,6 +94,7 @@ def participant_frames(json, playersinfo):
 
     teams = playersinfo[['participantId', 'teamId']]
     frames = pd.merge(all_frames, teams, on='participantId')
+    frames = pd.merge(frames, playersinfo[['participantId', 'summonerName', 'championId']], on='participantId')
     frames['timestamp'] = (frames['timestamp'] / 60000).astype('int')
 
     return frames
@@ -160,3 +161,14 @@ def get_queuesid(api):
         queuesid = queuesid.append(df, ignore_index=True)
 
     return queuesid
+
+
+def player_stats_table(frames_df, champs):
+    df = frames_df.copy()
+    df.rename(columns={'championId': 'champion'}, inplace=True)
+    df = df.merge(champs, on='champion')
+    df.drop(['champion'], axis=1, inplace=True)
+    df.rename(columns={'name': 'champion'}, inplace=True)
+    df = df[['timestamp', 'summonerName', 'champion', 'level', 'minionsKilled', 'totalGold']]
+
+    return df

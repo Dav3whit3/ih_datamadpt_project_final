@@ -19,6 +19,7 @@ timeline = aq.get_match_timeline(4884450178, key)
 frames = aq.participant_frames(timeline, players_info)
 events = aq.get_events(timeline)
 golddiff = aq.gold_diff(frames)
+players_stats = aq.player_stats_table(frames, champions)
 
 
 def build_banner():
@@ -223,14 +224,25 @@ def build_top_panel():
             # Metrics summary
             html.Div(
                 id="metric-summary-session",
-                className="eight columns",
+                #className="eight columns",
                 children=[
                     generate_section_banner("Players stats"),
                     html.Div(
                         id="metric-div",
                         children=[
                             #generate_metric_list_header(),
-                            dcc.Loading(children=html.Div(id="player-stats"))
+                            dcc.Graph(
+                                id="player-stats",
+                                figure=go.Figure(
+                                    {
+                                        "layout": {
+                                            "paper_bgcolor": "rgba(0,0,0,0)",
+                                            "plot_bgcolor": "rgba(0,0,0,0)",
+                                            "autosize": True,
+                                        },
+                                    }
+                                ),
+                            ),
                             #html.Div(
                             #    id="metric-rows",
                             #   children=[
@@ -355,3 +367,6 @@ def generate_metric_row(id, style, col1, col2, col3, col4, col5, col6):
             ),
         ],
     )
+
+
+

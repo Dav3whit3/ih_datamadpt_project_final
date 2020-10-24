@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 from Layout import tab1 as t1
-
+from Functions import API_data_extraction as aq
 
 app = dash.Dash(
     __name__,
@@ -155,7 +155,47 @@ def update_gold_progress_chart(value):
     return fig
 
 
+@app.callback(
+    Output("player-stats", "figure"),
+    [Input("gauge-slider", "value")]
+)
+def update_player_stats_table(minute):
+    df = t1.players_stats
+    df = df[df['timestamp'] == minute]
+    df.rename(columns={'summonerName': 'Summoner',
+                       'champion': 'Champion',
+                       'level': 'Level',
+                       'minionsKilled': 'Cs',
+                       'totalGold': 'Gold'
+                       }, inplace=True)
+    df.drop(['timestamp'], axis=1, inplace=True)
 
+    fig = go.Figure(data=[go.Table(
+        header=dict(values=df.columns.to_list(),
+                    align='center',
+                    font=dict(color='white', size=18),
+                    fill_color="rgba(0,0,0,0)"
+                    ),
+
+        cells=dict(values=[df[f'{col}'] for col in df.columns],
+                   align='center',
+                   font=dict(color='white', size=16),
+                   fill_color="rgba(0,0,0,0)",
+                   line_color="rgba(0,0,0,0)"
+                   )
+    )
+    ]
+    )
+    fig["layout"] = dict(
+        margin=dict(t=10, r=10, l=10, b=10, autoexpand=True),
+        hovermode="closest",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font={"color": "darkgray"},
+        autosize=True,
+)
+
+    return fig
 
 
 # Running the server
