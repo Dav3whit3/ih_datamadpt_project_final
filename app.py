@@ -4,7 +4,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
-import dash_daq as daq
 from Layout import tab1 as t1
 
 
@@ -74,7 +73,7 @@ def render_tab_content(tab_switch,
 )
 def update_user_info(n_clicks, input1):
     df = t1.match_list.copy()
-    df = df.head(5)[['timestamp', 'role', 'champion']]
+    df = df.head(5)[['Date', 'role', 'champion']]
 
     return dash_table.DataTable(
         columns=[{"name": c, "id": c} for c in df.columns],
@@ -82,7 +81,7 @@ def update_user_info(n_clicks, input1):
         style_table={'overflowX': 'auto'},
         style_data={'color': '#ffffff'},
         style_filter={'color': '#ffffff'},
-        #filter_action="native",
+        row_selectable="single",
         page_size=5,
         style_cell={"background-color": "#242a3b",
                     "color": "#ffffff",
@@ -154,6 +153,9 @@ def update_gold_progress_chart(value):
         })
 
     return fig
+
+
+
 
 
 # Running the server

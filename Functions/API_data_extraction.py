@@ -26,7 +26,7 @@ def get_matchlist(accountid, api, champions, queues):
     df = df.merge(queues, left_on='queue', right_on='queue', how='left')
 
     df.drop(['champion', 'queue'], axis=1, inplace=True)
-    df.rename(columns={'name': 'champion', 'queue_type': 'queue'}, inplace=True)
+    df.rename(columns={'timestamp': 'Date', 'name': 'champion', 'queue_type': 'queue'}, inplace=True)
 
     return df
 

@@ -229,13 +229,14 @@ def build_top_panel():
                     html.Div(
                         id="metric-div",
                         children=[
-                            generate_metric_list_header(),
-                            html.Div(
-                                id="metric-rows",
-                                children=[
+                            #generate_metric_list_header(),
+                            dcc.Loading(children=html.Div(id="player-stats"))
+                            #html.Div(
+                            #    id="metric-rows",
+                            #   children=[
                                     # generate_metric_row_helper(stopped_interval, 1),
-                                ],
-                            ),
+                            #    ],
+                            #),
                         ],
                     ),
                 ],
