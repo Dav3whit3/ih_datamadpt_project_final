@@ -179,7 +179,7 @@ def update_player_stats_table(minute):
 
         cells=dict(values=[df[f'{col}'] for col in df.columns],
                    align='center',
-                   font=dict(color='white', size=16),
+                   font=dict(color='white', size=20),
                    fill_color="rgba(0,0,0,0)",
                    line_color="rgba(0,0,0,0)"
                    )
@@ -187,7 +187,7 @@ def update_player_stats_table(minute):
     ]
     )
     fig["layout"] = dict(
-        margin=dict(t=10, r=10, l=10, b=10, autoexpand=True),
+        margin=dict(t=5, r=5, l=5, b=5, autoexpand=True),
         hovermode="closest",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
