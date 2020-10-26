@@ -137,7 +137,8 @@ def update_gold_progress_chart(value):
         autosize=True,
         xaxis={
             "zeroline": False,
-            "showgrid": False,
+            "showgrid": True,
+            "nticks": 5,
             "title": "Time (mins)",
             "showline": False,
             "titlefont": {"color": "darkgray"},
@@ -147,7 +148,7 @@ def update_gold_progress_chart(value):
             "title": "Gold",
             "showgrid": False,
             "showline": False,
-            "zeroline": False,
+            "zeroline": True,
             "autorange": True,
             "titlefont": {"color": "darkgray"},
         })
@@ -169,6 +170,7 @@ def update_player_stats_table(minute):
                        'totalGold': 'Gold'
                        }, inplace=True)
     df.drop(['timestamp'], axis=1, inplace=True)
+    df.sort_values(by=['Gold'], ascending=False, inplace=True)
 
     fig = go.Figure(data=[go.Table(
         header=dict(values=df.columns.to_list(),

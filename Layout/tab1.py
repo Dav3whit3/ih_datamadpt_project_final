@@ -129,9 +129,9 @@ def build_quick_stats_panel():
 
                     dcc.Input(
                         id="summoner_name",
-                        placeholder="input summoner name",
+                        placeholder="Select summoner name",
                         type='text',
-                        value="Saikki kusuo",
+                        value="",
                         size="15",
                         style={"width": "100%", "margin-top": "10px"}
                     ),
@@ -181,11 +181,12 @@ def build_quick_stats_panel():
                                    size=160,
                                    n_clicks=0,
                                    style={"text-align": "center",
-                                          "margin-bottom": "10px",
+                                          "margin-bottom": "20px",
                                           "color": "#ffffff",
                                           "margin-top": "10px",
                                           "margin-left": "35%",
-                                          "margin-right": "auto"}
+                                          "margin-right": "auto",
+                                          }
                                    ),
                     dcc.Slider(
                         id="gauge-slider",
@@ -201,10 +202,12 @@ def build_quick_stats_panel():
                         max=frames['timestamp'].max(),
                         min=frames['timestamp'].min(),
                         units="Min",
-                        color={"gradient": True, "ranges":{"green":[0,10],"yellow":[10,20],"red":[20,40]}},
-                        size=30,
+                        label="Progress (mins)",
+                        color="#27A73E",
+                        size=150,
                         value=5,
                         showCurrentValue=True,  # default size 200 pixel
+
                     ),
                 ],
             ),
@@ -262,9 +265,9 @@ def build_top_panel():
                             children=["Stats ranking",
                                       ]
                             ),
-                   dcc.Dropdown(
+                   #dcc.Dropdown(
                         # style={"width": "40%"}
-                    )
+                    #)
                 ],
             ),
         ],

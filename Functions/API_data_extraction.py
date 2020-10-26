@@ -21,7 +21,7 @@ def get_matchlist(accountid, api, champions, queues):
                         params={'api_key': api})
     json = html.json()
     df = pd.DataFrame(json['matches'])
-    df['timestamp'] = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x / 1000).strftime('%c'))
+    df['timestamp'] = df['timestamp'].apply(lambda x: datetime.fromtimestamp(x/1000).strftime("%d/%m/%Y %A, %H:%M:%S"))
     df = df.merge(champions, left_on='champion', right_on='champion', how='left')
     df = df.merge(queues, left_on='queue', right_on='queue', how='left')
 
