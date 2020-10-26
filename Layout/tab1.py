@@ -3,7 +3,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import dash_daq as daq
 from Functions import API_data_extraction as aq
-
+from datetime import date
 
 summoner = 'Saikki kusuo'
 key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
@@ -158,12 +158,17 @@ def build_quick_stats_panel():
                                "text-align": "center",
                                "margin-top": "30px"},
                         children=[
-                            dcc.Dropdown(
-                                id="match-list",
-                                placeholder="Select a match",
-                                options=[{'label': f'{match}', 'value': f'{match}'} for match in
-                                         list(match_list['gameId'].head(10))],
-                            )
+                            dcc.DatePickerSingle(
+                                id='my-date-picker-single',
+                                min_date_allowed=match_list['Date2'].min(),
+                                max_date_allowed=match_list['Date2'].max(),
+                                initial_visible_month=date.today(),
+                                clearable=True,
+                                day_size=50,
+                                placeholder="Select a date",
+                                display_format='DD MMMM Y',
+                                date=date.today()
+                            ),
                         ]
                     )
                     ,
@@ -227,7 +232,7 @@ def build_top_panel():
             # Metrics summary
             html.Div(
                 id="metric-summary-session",
-                #className="eight columns",
+                className="eight columns",
                 children=[
                     generate_section_banner("Players stats"),
                     html.Div(
@@ -262,12 +267,8 @@ def build_top_panel():
                 style={"display": "block"},
                 children=[
                    html.Div(className="section-banner",
-                            children=["Stats ranking",
-                                      ]
+                            children=["Stats ranking"]
                             ),
-                   #dcc.Dropdown(
-                        # style={"width": "40%"}
-                    #)
                 ],
             ),
         ],
@@ -277,7 +278,7 @@ def build_top_panel():
 def build_chart_panel():
     return html.Div(
         id="control-chart-container",
-        #className="twelve columns",
+        className="twelve columns",
         children=[
             generate_section_banner("Gold progress"),
             dcc.Graph(
@@ -308,68 +309,3 @@ def build_chart_panel():
             ),
         ],
     )
-
-
-def generate_metric_list_header():
-    return generate_metric_row(
-        "metric_header",
-        {"height": "3rem", "margin": "1rem 0", "textAlign": "center"},
-        {"id": "m_header_1", "children": html.Div("Player")},
-        {"id": "m_header_2", "children": html.Div("Champion")},
-        {"id": "m_header_3", "children": html.Div("Level")},
-        {"id": "m_header_4", "children": html.Div("Cs")},
-        {"id": "m_header_5", "children": html.Div("Gold")},
-        {"id": "m_header_6", "children": "Pass/Fail"},
-    )
-
-
-def generate_metric_row(id, style, col1, col2, col3, col4, col5, col6):
-    if style is None:
-        style = {"height": "8rem", "width": "100%"}
-
-    return html.Div(
-        id=id,
-        className="row metric-row",
-        style=style,
-        children=[
-            html.Div(
-                id=col1["id"],
-                className="one column",
-                style={"margin-right": "2.5rem", "minWidth": "50px"},
-                children=col1["children"],
-            ),
-            html.Div(
-                id=col2["id"],
-                style={"textAlign": "center"},
-                className="one column",
-                children=col2["children"],
-            ),
-            html.Div(
-                id=col3["id"],
-                style={"textAlign": "center"},
-                className="one column",
-                children=col3["children"],
-            ),
-            html.Div(
-                id=col4["id"],
-                style={"height": "100%"},
-                className="three columns",
-                children=col4["children"],
-            ),
-            html.Div(
-                id=col5["id"],
-                style={"display": "flex", "justifyContent": "center"},
-                className="one column",
-                children=col5["children"],
-            ),
-            html.Div(
-                id=col6["id"],
-                style={"height": "100%"},
-                className="four columns",
-                children=col6["children"],
-            ),
-        ],
-    )
-
-
-
