@@ -183,8 +183,10 @@ def update_player_stats_table(minute):
                    align='center',
                    font=dict(color='white', size=20),
                    fill_color="rgba(0,0,0,0)",
-                   line_color="rgba(0,0,0,0)"
-                   )
+                   line_color="rgba(0,0,0,0)",
+                   height= 30,
+                    ),
+        columnwidth=[3,2,1,1,1]
     )
     ]
     )

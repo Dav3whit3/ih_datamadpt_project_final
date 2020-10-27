@@ -163,11 +163,14 @@ def build_quick_stats_panel():
                                 min_date_allowed=match_list['Date2'].min(),
                                 max_date_allowed=match_list['Date2'].max(),
                                 initial_visible_month=date.today(),
-                                clearable=True,
+                                clearable=False,
                                 day_size=50,
                                 placeholder="Select a date",
-                                display_format='DD MMMM Y',
-                                date=date.today()
+                                display_format='M-D-Y',
+                                date=date.today(),
+                                style={
+                                    "width":"100%",
+                                }
                             ),
                         ]
                     )
@@ -246,8 +249,9 @@ def build_top_panel():
                                         "layout": {
                                             "paper_bgcolor": "rgba(0,0,0,0)",
                                             "plot_bgcolor": "rgba(0,0,0,0)",
-                                            "autosize": True,
+                                            "height": 30,
                                         },
+                                        "style": {"padding" : "5px"}
                                     }
                                 ),
                             ),
