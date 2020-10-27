@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 from Layout import tab1 as t1
+import webbrowser
 
 
 app = dash.Dash(
@@ -19,7 +20,7 @@ app.layout = html.Div(
     id="big-app-container",
     children=[
         t1.build_banner(),
-        # dcc.Interval(id="interval-component",interval=2 * 1000,  n_intervals=50, disabled=True,),
+        dcc.Interval(id="interval-component", interval=2 * 1000,  n_intervals=50, disabled=True,),
         html.Div(
             id="app-container",
             children=[
@@ -114,7 +115,6 @@ def update_gold_progress_chart(value):
                              fill='tozeroy',
                              name='Blue team',
                              line_color='#2E86C1',
-                             #mode='none'
                              )
                   )
 
@@ -123,7 +123,6 @@ def update_gold_progress_chart(value):
                              fill='tozeroy',
                              name="Red team",
                              line_color='#E74C3C',
-                             #mode='none'
                              )
                   )
     fig["layout"] = dict(
@@ -208,5 +207,5 @@ def update_player_stats_table(minute):
 
 # Running the server
 if __name__ == "__main__":
-    # launch = webbrowser.open_new_tab('http://127.0.0.1:8050/')
+    # webbrowser.open_new_tab('http://127.0.0.1:8050/')
     app.run_server(debug=True, port=8050)
