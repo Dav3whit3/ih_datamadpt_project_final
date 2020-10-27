@@ -212,8 +212,8 @@ def build_quick_stats_panel():
                         units="Min",
                         label="Progress (mins)",
                         color="#27A73E",
-                        size=150,
-                        value=5,
+                        size=100,
+                        value=0,
                         showCurrentValue=True,  # default size 200 pixel
 
                     ),
@@ -268,11 +268,72 @@ def build_top_panel():
             html.Div(
                 id="stats-ranking",
                 className="four columns",
-                style={"display": "block"},
+                style={"display": "inline",
+                       "text-align": "center"},
                 children=[
                    html.Div(className="section-banner",
                             children=["Stats ranking"]
                             ),
+                   html.P("Score"),
+                   html.Div(
+                       id="Score",
+                       style={"display": "inline-block",
+                              "text-align": "center"},
+                       children=[
+                           daq.LEDDisplay(
+                               id='red-team',
+                               label="Red Team",
+                               value=6,
+                               size=50,
+                               style={"display": "inline-block",
+                                      "paper_bgcolor": "rgba(0,0,0,0)",
+                                      "plot_bgcolor": "rgba(0,0,0,0)",
+                                      "margin-right": "20px"},
+                               color="#E74C3C",
+                               backgroundColor="rgba(0,0,0,0)"
+                           ),
+                           daq.LEDDisplay(
+                               id='blue-team',
+                               label="Blue Team",
+                               value=6,
+                               size=50,
+                               style={"display": "inline-block",
+                                      "margin-bottom": "20px"},
+                               color="#2E86C1",
+                               backgroundColor="rgba(0,0,0,0)"
+                           )
+                       ]
+                   ),
+                    html.P("Towers"),
+                    html.Div(
+                        id="towers",
+                        style={"display": "inline-block",
+                               "text-align": "center"},
+                        children=[
+                            daq.LEDDisplay(
+                                id='red-team-towers',
+                                label="Red Team",
+                                value=6,
+                                size=20,
+                                style={"display": "inline-block",
+                                       "paper_bgcolor": "rgba(0,0,0,0)",
+                                       "plot_bgcolor": "rgba(0,0,0,0)",
+                                       "margin-right": "20px"},
+                                color="white",
+                                backgroundColor="rgba(0,0,0,0)"
+                            ),
+                            daq.LEDDisplay(
+                                id='blue-team-towers',
+                                label="Blue Team",
+                                value=6,
+                                size=20,
+                                style={"display": "inline-block"},
+                                color="white",
+                                backgroundColor="rgba(0,0,0,0)"
+                            )
+                        ]
+                    )
+
                 ],
             ),
         ],

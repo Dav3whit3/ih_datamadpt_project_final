@@ -47,7 +47,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -99,8 +99,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.app" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.app" />
       </list>
     </recent_temporary>
   </component>
@@ -128,9 +128,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="768" y="308" width="424" height="491" key="FileChooserDialogImpl" timestamp="1602515255281">
-      <screen x="50" y="21" width="1870" height="1059" />
+    <state x="737" y="301" width="424" height="491" key="FileChooserDialogImpl" timestamp="1603807070867">
+      <screen x="0" y="27" width="1920" height="1011" />
     </state>
+    <state x="737" y="301" key="FileChooserDialogImpl/0.27.1920.1011/1920.0.1920.1080@0.27.1920.1011" timestamp="1603807070867" />
     <state x="768" y="308" width="424" height="491" key="FileChooserDialogImpl/50.21.1870.1059@50.21.1870.1059" timestamp="1602515255281" />
     <state width="1106" height="247" key="GridCell.Tab.0.bottom" timestamp="1602876664941">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -168,11 +169,12 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state width="1848" height="372" key="GridCell.Tab.1.right/0.21.1920.1059/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602331727004" />
-    <state x="2376" y="149" width="1007" height="737" key="SettingsEditor" timestamp="1602865057577">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="456" y="166" width="1180" height="786" key="SettingsEditor" timestamp="1603807519046">
+      <screen x="0" y="27" width="1920" height="1011" />
     </state>
     <state x="2376" y="149" width="1007" height="737" key="SettingsEditor/0.21.1920.1007/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602092942332" />
     <state x="2376" y="149" key="SettingsEditor/0.21.1920.1059/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602331641943" />
+    <state x="456" y="166" width="1180" height="786" key="SettingsEditor/0.27.1920.1011/1920.0.1920.1080@0.27.1920.1011" timestamp="1603807519046" />
     <state x="2376" y="149" key="SettingsEditor/50.27.1870.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602865057577" />
   </component>
 </project>

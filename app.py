@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 from Layout import tab1 as t1
-from Functions import API_data_extraction as aq
+
 
 app = dash.Dash(
     __name__,
@@ -140,14 +140,18 @@ def update_gold_progress_chart(value):
             "showgrid": True,
             "nticks": 5,
             "title": "Time (mins)",
-            "showline": False,
+            "showline": True,
+            "mirror": True,
+            "linecolor": 'black',
             "titlefont": {"color": "darkgray"},
             "autorange": True
         },
         yaxis={
             "title": "Gold",
             "showgrid": False,
-            "showline": False,
+            "showline": True,
+            "mirror": True,
+            "linecolor": 'black',
             "zeroline": True,
             "autorange": True,
             "titlefont": {"color": "darkgray"},
@@ -161,7 +165,7 @@ def update_gold_progress_chart(value):
     [Input("gauge-slider", "value")]
 )
 def update_player_stats_table(minute):
-    df = t1.players_stats
+    df = t1.players_stats.copy()
     df = df[df['timestamp'] == minute]
     df.rename(columns={'summonerName': 'Summoner',
                        'champion': 'Champion',
@@ -186,10 +190,10 @@ def update_player_stats_table(minute):
                    line_color="rgba(0,0,0,0)",
                    height= 30,
                     ),
-        columnwidth=[3,2,1,1,1]
-    )
-    ]
-    )
+        columnwidth=[3, 2, 1, 1, 1]
+                                )
+                        ]
+                    )
     fig["layout"] = dict(
         margin=dict(t=5, r=5, l=5, b=5, autoexpand=True),
         hovermode="closest",
@@ -197,7 +201,7 @@ def update_player_stats_table(minute):
         plot_bgcolor="rgba(0,0,0,0)",
         font={"color": "darkgray"},
         autosize=True,
-)
+                        )
 
     return fig
 
