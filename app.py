@@ -206,17 +206,23 @@ def update_player_stats_table(minute):
 
 @app.callback([
     Output("red-team", "value"),
-    Output("blue-team", "value")],
+    Output("blue-team", "value"),
+    Output("red-team-towers", "value"),
+    Output("blue-team-towers", "value")],
     [Input("gauge-slider", "value")]
 )
 def update_score(minute):
     df = t1.events.copy()
-    df = df[(df['timestamp'] <= minute) & (df['type'] == 'CHAMPION_KILL')]
+    df_kills = df[(df['timestamp'] <= minute) & (df['type'] == 'CHAMPION_KILL')]
+    df_towers = df[(df['timestamp'] <= minute) & (df['type'] == 'BUILDING_KILL')]
 
-    rt = df[df['teamId_y'] == 200].count()['type']
-    bt = df[df['teamId_y'] == 100].count()['type']
+    rt_kills = df_kills[df_kills['teamId_y'] == 200].count()['type']
+    bt_kills = df_kills[df_kills['teamId_y'] == 100].count()['type']
 
-    return rt, bt
+    rt_towers = df_towers[df_towers['teamId_y'] == 200].count()['type']
+    bt_towers = df_towers[df_towers['teamId_y'] == 100].count()['type']
+
+    return rt_kills, bt_kills, rt_towers, bt_towers
 
 
 # Running the server

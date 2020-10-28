@@ -305,7 +305,6 @@ def build_top_panel():
                         children=[
                             daq.LEDDisplay(
                                 id='red-team-towers',
-                                label="Red Team",
                                 value=6,
                                 size=20,
                                 style={"display": "inline-block",
@@ -317,7 +316,6 @@ def build_top_panel():
                             ),
                             daq.LEDDisplay(
                                 id='blue-team-towers',
-                                label="Blue Team",
                                 value=6,
                                 size=20,
                                 style={"display": "inline-block"},
