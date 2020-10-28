@@ -264,10 +264,11 @@ def build_top_panel():
                        "text-align": "center"},
                 children=[
                    html.Div(className="section-banner",
-                            children=["Stats ranking"]
+                            children=["Game progress"]
                             ),
                    html.P("Score",
-                           style={"text-align": "center"}),
+                           style={"text-align": "center",
+                                  "font-size": "50px"}),
                    html.Div(
                         id="Score",
                         style={"display": "inline-block",
@@ -297,7 +298,9 @@ def build_top_panel():
                             )
                         ]
                    ),
-                   html.P("Towers"),
+                   html.P("Towers",
+                          style={"font-size": "20px"}
+                          ),
                    html.Div(
                         id="towers",
                         style={"display": "inline-block",
