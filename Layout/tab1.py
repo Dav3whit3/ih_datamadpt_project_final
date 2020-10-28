@@ -17,7 +17,7 @@ match_info = aq.get_match_info(4884450178, key)
 players_info = aq.get_players_info(match_info)
 timeline = aq.get_match_timeline(4884450178, key)
 frames = aq.participant_frames(timeline, players_info)
-events = aq.get_events(timeline)
+events = aq.get_events(timeline, players_info)
 golddiff = aq.gold_diff(frames)
 players_stats = aq.player_stats_table(frames, champions)
 
@@ -232,7 +232,6 @@ def build_top_panel():
         id="top-section-container",
         className="row",
         children=[
-            # Metrics summary
             html.Div(
                 id="metric-summary-session",
                 className="eight columns",
@@ -241,7 +240,6 @@ def build_top_panel():
                     html.Div(
                         id="metric-div",
                         children=[
-                            #generate_metric_list_header(),
                             dcc.Graph(
                                 id="player-stats",
                                 figure=go.Figure(
@@ -255,12 +253,6 @@ def build_top_panel():
                                     }
                                 ),
                             ),
-                            #html.Div(
-                            #    id="metric-rows",
-                            #   children=[
-                                    # generate_metric_row_helper(stopped_interval, 1),
-                            #    ],
-                            #),
                         ],
                     ),
                 ],
@@ -274,38 +266,39 @@ def build_top_panel():
                    html.Div(className="section-banner",
                             children=["Stats ranking"]
                             ),
-                   html.P("Score"),
+                   html.P("Score",
+                           style={"text-align": "center"}),
                    html.Div(
-                       id="Score",
-                       style={"display": "inline-block",
-                              "text-align": "center"},
-                       children=[
-                           daq.LEDDisplay(
-                               id='red-team',
-                               label="Red Team",
-                               value=6,
-                               size=50,
-                               style={"display": "inline-block",
-                                      "paper_bgcolor": "rgba(0,0,0,0)",
-                                      "plot_bgcolor": "rgba(0,0,0,0)",
-                                      "margin-right": "20px"},
-                               color="#E74C3C",
-                               backgroundColor="rgba(0,0,0,0)"
-                           ),
-                           daq.LEDDisplay(
-                               id='blue-team',
-                               label="Blue Team",
-                               value=6,
-                               size=50,
-                               style={"display": "inline-block",
-                                      "margin-bottom": "20px"},
-                               color="#2E86C1",
-                               backgroundColor="rgba(0,0,0,0)"
-                           )
-                       ]
+                        id="Score",
+                        style={"display": "inline-block",
+                               "text-align": "center"},
+                        children=[
+                            daq.LEDDisplay(
+                                id='red-team',
+                                label="Red Team",
+                                value=6,
+                                size=50,
+                                style={"display": "inline-block",
+                                       "paper_bgcolor": "rgba(0,0,0,0)",
+                                       "plot_bgcolor": "rgba(0,0,0,0)",
+                                       "margin-right": "20px"},
+                                color="#E74C3C",
+                                backgroundColor="rgba(0,0,0,0)"
+                            ),
+                            daq.LEDDisplay(
+                                id='blue-team',
+                                label="Blue Team",
+                                value=6,
+                                size=50,
+                                style={"display": "inline-block",
+                                       "margin-bottom": "20px"},
+                                color="#2E86C1",
+                                backgroundColor="rgba(0,0,0,0)"
+                            )
+                        ]
                    ),
-                    html.P("Towers"),
-                    html.Div(
+                   html.P("Towers"),
+                   html.Div(
                         id="towers",
                         style={"display": "inline-block",
                                "text-align": "center"},
@@ -332,8 +325,7 @@ def build_top_panel():
                                 backgroundColor="rgba(0,0,0,0)"
                             )
                         ]
-                    )
-
+                   ),
                 ],
             ),
         ],

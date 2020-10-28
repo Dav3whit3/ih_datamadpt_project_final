@@ -101,7 +101,7 @@ def participant_frames(json, playersinfo):
     return frames
 
 
-def get_events(json):
+def get_events(json, players_info):
     events = pd.DataFrame()
 
     frames = json['frames']
@@ -111,6 +111,11 @@ def get_events(json):
     events['position_x'] = [elem.get('x') if type(elem) == dict else 'none' for elem in events['position']]
     events['position_y'] = [elem.get('y') if type(elem) == dict else 'none' for elem in events['position']]
     events.drop(columns='position', inplace=True)
+    events['timestamp'] = (events['timestamp'] / 60000).astype('int')
+    events.drop(columns=['teamId'], axis=1, inplace=True)
+    events = events.merge(players_info[['participantId', 'teamId']], on='participantId', how='left')
+    events = events.merge(players_info[['participantId', 'teamId']], left_on='killerId', right_on='participantId',
+                          how='outer')
 
     return events
 

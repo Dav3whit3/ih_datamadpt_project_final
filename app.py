@@ -5,7 +5,6 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 from Layout import tab1 as t1
-import webbrowser
 
 
 app = dash.Dash(
@@ -203,6 +202,21 @@ def update_player_stats_table(minute):
                         )
 
     return fig
+
+
+@app.callback([
+    Output("red-team", "value"),
+    Output("blue-team", "value")],
+    [Input("gauge-slider", "value")]
+)
+def update_score(minute):
+    df = t1.events.copy()
+    df = df[(df['timestamp'] <= minute) & (df['type'] == 'CHAMPION_KILL')]
+
+    rt = df[df['teamId_y'] == 200].count()['type']
+    bt = df[df['teamId_y'] == 100].count()['type']
+
+    return rt, bt
 
 
 # Running the server
