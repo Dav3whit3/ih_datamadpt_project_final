@@ -27,13 +27,13 @@ app.layout = html.Div(
         dcc.Store(id="account-id", storage_type='session'),
         dcc.Store(id="match-list", storage_type='session'),
         dcc.Store(id="game-id", storage_type='session'),
-        dcc.Store(id="match-info",),
+        dcc.Store(id="match-info", storage_type='session'),
         dcc.Store(id="players-info", storage_type='session'),
         dcc.Store(id="timeline", storage_type='session'),
         dcc.Store(id="frames", storage_type='session'),
         dcc.Store(id="events", storage_type='session'),
         dcc.Store(id="golddiff", storage_type='session'),
-        dcc.Store(id="players_stats", storage_type='session'),
+        dcc.Store(id="players_stats_df", storage_type='session'),
         t1.build_banner(),
         #dcc.Interval(id="interval-component", interval=2 * 1000,  n_intervals=50, disabled=True,),
         html.Div(
@@ -225,7 +225,7 @@ def update_golddiff(frames):
 
 # Store player stats table ---------------------------------------------------------------------------------------------
 @app.callback(
-    Output("players_stats", "data"),
+    Output("players_stats_df", "data"),
     [Input("frames", "data")]
 )
 def update_player_stats_table(frames):
@@ -325,10 +325,10 @@ def update_gold_progress_chart(minute, golddiff):
 @app.callback(
     Output("player-stats", "figure"),
     [Input("gauge-slider", "value"),
-     Input("players_stats", "data")]
+     Input("players_stats_df", "data")]
 )
-def update_player_stats_table(minute, df):
-    df = pd.DataFrame(df)
+def update_player_stats_table(minute, playerstats):
+    df = pd.DataFrame(playerstats)
     df = df[df['timestamp'] == minute]
     df.rename(columns={'summonerName': 'Summoner',
                        'champion': 'Champion',

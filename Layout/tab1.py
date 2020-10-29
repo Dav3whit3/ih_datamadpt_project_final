@@ -131,7 +131,7 @@ def build_quick_stats_panel():
                         id="summoner-name-input",
                         placeholder="Select summoner name",
                         type='text',
-                        value="",
+                        value="Saikki Kusuo",
                         size="15",
                         style={"width": "100%", "margin-top": "10px"}
                     ),
