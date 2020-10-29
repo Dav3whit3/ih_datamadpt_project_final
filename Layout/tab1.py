@@ -5,9 +5,8 @@ import dash_daq as daq
 from Functions import API_data_extraction as aq
 from datetime import date
 
-summoner = 'Saikki kusuo'
-key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
 
+"""
 summoner_info = aq.get_summoner_info(summoner, key)
 accountid = summoner_info['accountId'][0]
 champions = aq.championsid(key)
@@ -20,6 +19,7 @@ frames = aq.participant_frames(timeline, players_info)
 events = aq.get_events(timeline, players_info)
 golddiff = aq.gold_diff(frames)
 players_stats = aq.player_stats_table(frames, champions)
+"""
 
 
 def build_banner():
@@ -128,7 +128,7 @@ def build_quick_stats_panel():
                     html.P("User info"),
 
                     dcc.Input(
-                        id="summoner_name",
+                        id="summoner-name-input",
                         placeholder="Select summoner name",
                         type='text',
                         value="",
@@ -160,8 +160,8 @@ def build_quick_stats_panel():
                         children=[
                             dcc.DatePickerSingle(
                                 id='my-date-picker-single',
-                                min_date_allowed=match_list['Date2'].min(),
-                                max_date_allowed=match_list['Date2'].max(),
+                                #min_date_allowed=match_list['Date2'].min(),
+                                #max_date_allowed=match_list['Date2'].max(),
                                 initial_visible_month=date.today(),
                                 clearable=False,
                                 day_size=50,
@@ -198,8 +198,8 @@ def build_quick_stats_panel():
                                    ),
                     dcc.Slider(
                         id="gauge-slider",
-                        max=frames['timestamp'].max(),
-                        min=frames['timestamp'].min(),
+                        #max=frames['timestamp'].max(),
+                        #min=frames['timestamp'].min(),
                         # step=None,
                         vertical=False,
                         disabled=False,
@@ -207,8 +207,8 @@ def build_quick_stats_panel():
                     ),
                     daq.Gauge(
                         id="progress-gauge",
-                        max=frames['timestamp'].max(),
-                        min=frames['timestamp'].min(),
+                        #max=frames['timestamp'].max(),
+                        #min=frames['timestamp'].min(),
                         units="Min",
                         label="Progress (mins)",
                         color="#27A73E",

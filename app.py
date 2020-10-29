@@ -1,3 +1,4 @@
+import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -5,6 +6,7 @@ from dash.dependencies import Input, Output, State
 import dash_table
 import plotly.graph_objs as go
 from Layout import tab1 as t1
+from Functions import API_data_extraction as aq
 
 
 app = dash.Dash(
@@ -14,12 +16,26 @@ app = dash.Dash(
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
+key = 'RGAPI-9724b32a-f354-408c-8cde-8fdcc35e01fa'
+champions = aq.championsid(key)
+queues = aq.get_queuesid(key)
 
 app.layout = html.Div(
     id="big-app-container",
     children=[
+        dcc.Store(id="summoner-name", storage_type='session'),
+        dcc.Store(id="account-id", storage_type='session'),
+        dcc.Store(id="match-list", storage_type='session'),
+        dcc.Store(id="game-id", storage_type='session'),
+        dcc.Store(id="match-info",),
+        dcc.Store(id="players-info", storage_type='session'),
+        dcc.Store(id="timeline", storage_type='session'),
+        dcc.Store(id="frames", storage_type='session'),
+        dcc.Store(id="events", storage_type='session'),
+        dcc.Store(id="golddiff", storage_type='session'),
+        dcc.Store(id="players_stats", storage_type='session'),
         t1.build_banner(),
-        dcc.Interval(id="interval-component", interval=2 * 1000,  n_intervals=50, disabled=True,),
+        #dcc.Interval(id="interval-component", interval=2 * 1000,  n_intervals=50, disabled=True,),
         html.Div(
             id="app-container",
             children=[
@@ -28,23 +44,17 @@ app.layout = html.Div(
                 html.Div(id="app-content"),
             ],
         ),
-        # dcc.Store(id="value-setter-store", data=init_value_setter_store()),
-        dcc.Store(id="n-interval-stage", data=50),
         t1.generate_modal(),
     ],
 )
 
 
+# Tab switch callback --------------------------------------------------------------------------------------------------
 @app.callback(
-    [Output("app-content", "children"),
-     # Output("interval-component", "n_intervals")
-     ],
+    Output("app-content", "children"),
     [Input("app-tabs", "value")],
-    # [State("n-interval-stage", "data")]
 )
-def render_tab_content(tab_switch,
-                       # interval_component
-                       ):
+def render_tab_content(tab_switch):
     if tab_switch == "tab1":
         return [html.Div(
             id="set-specs-intro-container",
@@ -62,36 +72,187 @@ def render_tab_content(tab_switch,
                 ),
             ],
         ),
-        # interval_component
     )
 
 
+# Store summoner name & acc ID callback --------------------------------------------------------------------------------
+@app.callback(
+    [Output("summoner-name", "data"),
+     Output("account-id", "data")],
+    [Input("submit-val", "n_clicks")],
+    [State("summoner-name-input", "value")]
+)
+def store_summoner_name(n_clicks, value):
+    summoner_info = aq.get_summoner_info(value, key)
+    accid = summoner_info['accountId'][0]
+
+    return value, accid
+
+
+# Store full match list callback ---------------------------------------------------------------------------------------
+@app.callback(
+    Output("match-list", "data"),
+    [Input("account-id", "data")]
+)
+def update_match_list(accid):
+    match_list = aq.get_matchlist(accid, key, champions, queues)
+    match_list = match_list.to_dict(orient='records')
+
+    return match_list
+
+
+# First-5 match list callback ------------------------------------------------------------------------------------------
 @app.callback(
     Output("user_info_container", "children"),
-    [Input("submit-val", "n_clicks")],
-    [State("summoner_name", "value")]
+    [Input("match-list", "data")]
 )
-def update_user_info(n_clicks, input1):
-    df = t1.match_list.copy()
-    df = df.head(5)[['Date', 'role', 'champion']]
+def update_user_info(input1):
+    df = pd.DataFrame(input1)
+    df = df.head(5)[['gameId', 'Date', 'role', 'champion', 'queue']]
 
     return dash_table.DataTable(
+        id="first-five-match-list",
         columns=[{"name": c, "id": c} for c in df.columns],
         data=df.to_dict('records'),
         style_table={'overflowX': 'auto'},
         style_data={'color': '#ffffff'},
         style_filter={'color': '#ffffff'},
         row_selectable="single",
+        selected_rows=[1],
         page_size=5,
+
         style_cell={"background-color": "#242a3b",
                     "color": "#ffffff",
-                    "textAlign": "center"},
+                    "textAlign": "center",
+                    "height": "auto",
+                    'minWidth': '180px', 'width': '180px', 'maxWidth': '180px',
+                    'whiteSpace': 'normal'
+                    },
         style_as_list_view=True,
         style_header={"background-color": "#1f2536",
                       "padding": "0px 5px"},
     )
 
 
+# Store Game ID callback -----------------------------------------------------------------------------------------------
+@app.callback(
+    Output('game-id', 'data'),
+    [Input('first-five-match-list', 'data'),
+     Input('first-five-match-list', 'selected_rows')])
+def update_gameid(data, selected_rows):
+    df = pd.DataFrame(data).iloc[selected_rows]
+    gameid = df['gameId']
+
+    return gameid
+
+
+# Store match info -----------------------------------------------------------------------------------------------------
+@app.callback(
+    Output("match-info", "data"),
+    [Input("game-id", "data")]
+)
+def update_match_info(gameid):
+    gameid = gameid[0]
+    match_info = aq.get_match_info(gameid, key)
+
+    return match_info
+
+
+# Store Players info ---------------------------------------------------------------------------------------------------
+@app.callback(
+    Output("players-info", "data"),
+    [Input("match-info", "data")]
+)
+def update_players_info(matchinfo):
+    players_info = aq.get_players_info(matchinfo)
+    players_info = players_info.to_dict(orient='records')
+
+    return players_info
+
+
+# Store match timeline -------------------------------------------------------------------------------------------------
+@app.callback(
+    Output("timeline", "data"),
+    [Input("game-id", "data")]
+)
+def update_match_timeline(gameid):
+    gameid = gameid[0]
+    timeline = aq.get_match_timeline(gameid, key)
+
+    return timeline
+
+
+# Store match frames ---------------------------------------------------------------------------------------------------
+@app.callback(
+    Output("frames", "data"),
+    [Input("timeline", "data"),
+     Input("players-info", "data")]
+)
+def update_match_frames(timeline, players_info):
+    players_info = pd.DataFrame(players_info)
+    frames = aq.participant_frames(timeline, players_info)
+    frames = frames.to_dict(orient='records')
+
+    return frames
+
+
+# Store match events ---------------------------------------------------------------------------------------------------
+@app.callback(
+    Output("events", "data"),
+    [Input("timeline", "data"),
+     Input("players-info", "data")]
+)
+def update_match_events(timeline, players_info):
+    players_info = pd.DataFrame(players_info)
+    events = aq.get_events(timeline, players_info)
+    events = events.to_dict(orient='records')
+
+    return events
+
+
+# Store match gold diff table ------------------------------------------------------------------------------------------
+@app.callback(
+    Output("golddiff", "data"),
+    [Input("frames", "data")]
+)
+def update_golddiff(frames):
+    frames = pd.DataFrame(frames)
+    golddiff = aq.gold_diff(frames)
+    golddiff = golddiff.to_dict(orient='records')
+
+    return golddiff
+
+
+# Store player stats table ---------------------------------------------------------------------------------------------
+@app.callback(
+    Output("players_stats", "data"),
+    [Input("frames", "data")]
+)
+def update_player_stats_table(frames):
+    frames = pd.DataFrame(frames)
+    players_stats = aq.player_stats_table(frames, champions)
+    players_stats = players_stats.to_dict(orient='records')
+
+    return players_stats
+
+
+# Update gauge and slider values
+@app.callback(
+    [Output("gauge-slider", "max"),
+     Output("gauge-slider", "min"),
+     Output("progress-gauge", "max"),
+     Output("progress-gauge", "min")],
+    [Input("frames", "data")]
+)
+def update_components_values(frames):
+    df = pd.DataFrame(frames)
+    maximum = df['timestamp'].max()
+    minimum = df['timestamp'].min()
+
+    return maximum, minimum, maximum, minimum
+
+
+# Gauge callback--------------------------------------------------------------------------------------------------------
 @app.callback(
     Output("progress-gauge", "value"),
     [Input("gauge-slider", "value")]
@@ -100,13 +261,15 @@ def update_gauge(value):
     return value
 
 
+# Gold chart callback --------------------------------------------------------------------------------------------------
 @app.callback(
     Output("gold-progress", "figure"),
-    [Input("gauge-slider", "value")]
+    [Input("gauge-slider", "value"),
+     Input("golddiff", "data")]
 )
-def update_gold_progress_chart(value):
-    df = t1.golddiff.copy()
-    df = df[df['timestamp'] <= value]
+def update_gold_progress_chart(minute, golddiff):
+    df = pd.DataFrame(golddiff)
+    df = df[df['timestamp'] <= minute]
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=df['timestamp'],
@@ -158,12 +321,14 @@ def update_gold_progress_chart(value):
     return fig
 
 
+# Player stats callback ------------------------------------------------------------------------------------------------
 @app.callback(
     Output("player-stats", "figure"),
-    [Input("gauge-slider", "value")]
+    [Input("gauge-slider", "value"),
+     Input("players_stats", "data")]
 )
-def update_player_stats_table(minute):
-    df = t1.players_stats.copy()
+def update_player_stats_table(minute, df):
+    df = pd.DataFrame(df)
     df = df[df['timestamp'] == minute]
     df.rename(columns={'summonerName': 'Summoner',
                        'champion': 'Champion',
@@ -187,7 +352,7 @@ def update_player_stats_table(minute):
                    fill_color="rgba(0,0,0,0)",
                    line_color="rgba(0,0,0,0)",
                    height= 30,
-                    ),
+                   ),
         columnwidth=[3, 2, 1, 1, 1]
                                 )
                         ]
@@ -204,15 +369,17 @@ def update_player_stats_table(minute):
     return fig
 
 
+# Scores callback ------------------------------------------------------------------------------------------------------
 @app.callback([
     Output("red-team", "value"),
     Output("blue-team", "value"),
     Output("red-team-towers", "value"),
     Output("blue-team-towers", "value")],
-    [Input("gauge-slider", "value")]
+    [Input("gauge-slider", "value"),
+     Input("events", "data")]
 )
-def update_score(minute):
-    df = t1.events.copy()
+def update_score(minute, df):
+    df = pd.DataFrame(df)
     df_kills = df[(df['timestamp'] <= minute) & (df['type'] == 'CHAMPION_KILL')]
     df_towers = df[(df['timestamp'] <= minute) & (df['type'] == 'BUILDING_KILL')]
 
@@ -227,5 +394,4 @@ def update_score(minute):
 
 # Running the server
 if __name__ == "__main__":
-    # webbrowser.open_new_tab('http://127.0.0.1:8050/')
     app.run_server(debug=True, port=8050)
