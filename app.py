@@ -104,17 +104,20 @@ def update_match_list(accid):
 # First-5 match list callback ------------------------------------------------------------------------------------------
 @app.callback(
     Output("user_info_container", "children"),
-    [Input("match-list", "data")]
+    [Input("match-list", "data"),
+     Input("my-date-picker-single", "date")]
 )
-def update_user_info(input1):
-    df = pd.DataFrame(input1)
-    df = df.head(5)[['Date', 'role', 'champion', 'queue', 'gameId']]
+def update_user_info(matchlist, date):
+    df = pd.DataFrame(matchlist)
+    df = df[df['Date2'] == date.replace("-", "/")]
+    df = df[['Date', 'queue', 'champion', 'role', 'gameId']]
 
     return dash_table.DataTable(
         id="first-five-match-list",
         columns=[{"name": c, "id": c} for c in df.columns],
         data=df.to_dict('records'),
-        style_table={'overflowX': 'auto'},
+        style_table={'height': '300px', 'overflowX': 'auto'},
+        page_action='none',
         style_data={'color': '#ffffff'},
         style_filter={'color': '#ffffff'},
         row_selectable="single",
@@ -150,14 +153,15 @@ def update_datepicker(matchlist):
 
 # Store Game ID callback -----------------------------------------------------------------------------------------------
 @app.callback(
-    Output('game-id', 'data'),
+    [Output('game-id', 'data'),
+     Output("gauge-slider", "value")],
     [Input('first-five-match-list', 'data'),
      Input('first-five-match-list', 'selected_rows')])
 def update_gameid(data, selected_rows):
     df = pd.DataFrame(data).iloc[selected_rows]
     gameid = df['gameId']
 
-    return gameid
+    return gameid, 0
 
 
 # Store match info -----------------------------------------------------------------------------------------------------
@@ -292,7 +296,8 @@ def update_gold_progress_chart(minute, golddiff):
                              name='Blue team',
                              line={
                                  "color": "#2E86C1",
-                                  }
+                                  },
+                             mode="none"
                              )
                   )
     fig.add_trace(go.Scatter(x=df['timestamp'],
@@ -301,7 +306,8 @@ def update_gold_progress_chart(minute, golddiff):
                              name="Red team",
                              line={
                                  "color": "#E74C3C",
-                                  }
+                                  },
+                             mode="none"
                              )
                   )
     fig["layout"] = dict(
@@ -344,7 +350,7 @@ def update_gold_progress_chart(minute, golddiff):
                 "y0": 1000,
                 "x1": df['timestamp'].max(),
                 "y1": 1000,
-                "line": {"color": "#91dfd2", "width": 2, "dash": "dot"},
+                "line": {"color": "#91dfd2", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -354,7 +360,7 @@ def update_gold_progress_chart(minute, golddiff):
                 "y0": -1000,
                 "x1": df['timestamp'].max(),
                 "y1": -1000,
-                "line": {"color": "#91dfd2", "width": 2, "dash": "dot"},
+                "line": {"color": "#91dfd2", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -364,7 +370,7 @@ def update_gold_progress_chart(minute, golddiff):
                 "y0": 3000,
                 "x1": df['timestamp'].max(),
                 "y1": 3000,
-                "line": {"color": "#f4d44d", "width": 2, "dash": "dot"},
+                "line": {"color": "#f4d44d", "width": 1, "dash": "dot"},
             },
             {
                 "type": "line",
@@ -374,7 +380,7 @@ def update_gold_progress_chart(minute, golddiff):
                 "y0": -3000,
                 "x1": df['timestamp'].max(),
                 "y1": -3000,
-                "line": {"color": "#f4d44d", "width": 2, "dash": "dot"},
+                "line": {"color": "#f4d44d", "width": 1, "dash": "dot"},
             },
         ]
     )
@@ -392,11 +398,13 @@ def update_player_stats_table(minute, stats):
 
     df = pd.DataFrame(stats)
     df = df[df['timestamp'] == minute]
+    df['teamId'] = df['teamId'].map({100: "Blue", 200: "Red"})
     df.rename(columns={'summonerName': 'Summoner',
                        'champion': 'Champion',
                        'level': 'Level',
                        'minionsKilled': 'Cs',
-                       'totalGold': 'Gold'
+                       'totalGold': 'Gold',
+                       'teamId': 'Team'
                        }, inplace=True)
     df.drop(['timestamp'], axis=1, inplace=True)
     df.sort_values(by=['Gold'], ascending=False, inplace=True)

@@ -2,24 +2,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 import dash_daq as daq
-from Functions import API_data_extraction as aq
 from datetime import date
-
-
-"""
-summoner_info = aq.get_summoner_info(summoner, key)
-accountid = summoner_info['accountId'][0]
-champions = aq.championsid(key)
-queues = aq.get_queuesid(key)
-match_list = aq.get_matchlist(accountid, key, champions, queues)
-match_info = aq.get_match_info(4884450178, key)
-players_info = aq.get_players_info(match_info)
-timeline = aq.get_match_timeline(4884450178, key)
-frames = aq.participant_frames(timeline, players_info)
-events = aq.get_events(timeline, players_info)
-golddiff = aq.gold_diff(frames)
-players_stats = aq.player_stats_table(frames, champions)
-"""
 
 
 def build_banner():
@@ -164,10 +147,10 @@ def build_quick_stats_panel():
                                 clearable=False,
                                 day_size=50,
                                 placeholder="Select a date",
-                                display_format='M-D-Y',
+                                display_format='Y/M/D',
                                 date=date.today(),
                                 style={
-                                    "width":"100%",
+                                    "width": "100%",
                                 }
                             ),
                         ]

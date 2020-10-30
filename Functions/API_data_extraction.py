@@ -175,6 +175,6 @@ def player_stats_table(frames_df, champs):
     df = df.merge(champs, on='champion')
     df.drop(['champion'], axis=1, inplace=True)
     df.rename(columns={'name': 'champion'}, inplace=True)
-    df = df[['timestamp', 'summonerName', 'champion', 'level', 'minionsKilled', 'totalGold']]
+    df = df[['timestamp', 'summonerName', 'champion', 'level', 'minionsKilled', 'totalGold', 'teamId']]
 
     return df
