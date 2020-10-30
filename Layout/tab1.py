@@ -242,16 +242,7 @@ def build_top_panel():
                         children=[
                             dcc.Graph(
                                 id="player-stats",
-                                figure=go.Figure(
-                                    {
-                                        "layout": {
-                                            "paper_bgcolor": "rgba(0,0,0,0)",
-                                            "plot_bgcolor": "rgba(0,0,0,0)",
-                                            "height": 30,
-                                        },
-                                        "style": {"padding" : "5px"}
-                                    }
-                                ),
+
                             ),
                         ],
                     ),

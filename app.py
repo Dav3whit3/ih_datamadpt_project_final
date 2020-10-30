@@ -23,17 +23,17 @@ queues = aq.get_queuesid(key)
 app.layout = html.Div(
     id="big-app-container",
     children=[
-        dcc.Store(id="summoner-name", storage_type='session'),
-        dcc.Store(id="account-id", storage_type='session'),
-        dcc.Store(id="match-list", storage_type='session'),
-        dcc.Store(id="game-id", storage_type='session'),
-        dcc.Store(id="match-info", storage_type='session'),
-        dcc.Store(id="players-info", storage_type='session'),
-        dcc.Store(id="timeline", storage_type='session'),
-        dcc.Store(id="frames", storage_type='session'),
-        dcc.Store(id="events", storage_type='session'),
-        dcc.Store(id="golddiff", storage_type='session'),
-        dcc.Store(id="players_stats_df", storage_type='session'),
+        dcc.Store(id="summoner-name"),
+        dcc.Store(id="account-id"),
+        dcc.Store(id="match-list"),
+        dcc.Store(id="game-id"),
+        dcc.Store(id="match-info"),
+        dcc.Store(id="players-info"),
+        dcc.Store(id="timeline"),
+        dcc.Store(id="frames"),
+        dcc.Store(id="events"),
+        dcc.Store(id="golddiff"),
+        dcc.Store(id="players_stats_df"),
         t1.build_banner(),
         #dcc.Interval(id="interval-component", interval=2 * 1000,  n_intervals=50, disabled=True,),
         html.Div(
@@ -327,8 +327,10 @@ def update_gold_progress_chart(minute, golddiff):
     [Input("gauge-slider", "value"),
      Input("players_stats_df", "data")]
 )
-def update_player_stats_table(minute, playerstats):
-    df = pd.DataFrame(playerstats)
+def update_player_stats_table(minute, stats):
+
+    
+    df = pd.DataFrame(stats)
     df = df[df['timestamp'] == minute]
     df.rename(columns={'summonerName': 'Summoner',
                        'champion': 'Champion',
@@ -351,7 +353,7 @@ def update_player_stats_table(minute, playerstats):
                    font=dict(color='white', size=20),
                    fill_color="rgba(0,0,0,0)",
                    line_color="rgba(0,0,0,0)",
-                   height= 30,
+                   height=30,
                    ),
         columnwidth=[3, 2, 1, 1, 1]
                                 )

@@ -5,3 +5,72 @@ gunicorn
 numpy
 pandas
 requests
+
+
+                                figure=go.Figure(
+                                    {
+                                        "data": [{}],
+
+                                        "layout": {
+                                            "paper_bgcolor": "rgba(0,0,0,0)",
+                                            "plot_bgcolor": "rgba(0,0,0,0)",
+                                            "height": 30,
+                                        },
+                                        "style": {"padding" : "5px"}
+                                    }
+                                ),
+
+
+   @app.callback(
+    Output("player-stats", "figure"),
+    [Input("gauge-slider", "value"),
+     Input("game-id", "data")]
+)
+def update_player_stats_table(minute, gameid):
+
+    gameid = gameid[0]
+    match_info = aq.get_match_info(gameid, key)
+    players_info = aq.get_players_info(match_info)
+    timeline = aq.get_match_timeline(gameid, key)
+    frames = aq.participant_frames(timeline, players_info)
+    players_stats = aq.player_stats_table(frames, champions)
+
+    df = players_stats
+    df = df[df['timestamp'] == minute]
+    df.rename(columns={'summonerName': 'Summoner',
+                       'champion': 'Champion',
+                       'level': 'Level',
+                       'minionsKilled': 'Cs',
+                       'totalGold': 'Gold'
+                       }, inplace=True)
+    df.drop(['timestamp'], axis=1, inplace=True)
+    df.sort_values(by=['Gold'], ascending=False, inplace=True)
+
+    fig = go.Figure(data=[go.Table(
+        header=dict(values=df.columns.to_list(),
+                    align='center',
+                    font=dict(color='white', size=18),
+                    fill_color="rgba(0,0,0,0)"
+                    ),
+
+        cells=dict(values=[df[f'{col}'] for col in df.columns],
+                   align='center',
+                   font=dict(color='white', size=20),
+                   fill_color="rgba(0,0,0,0)",
+                   line_color="rgba(0,0,0,0)",
+                   height=30,
+                   ),
+        columnwidth=[3, 2, 1, 1, 1]
+                                )
+                        ]
+                    )
+    fig["layout"] = dict(
+        margin=dict(t=5, r=5, l=5, b=5, autoexpand=True),
+        hovermode="closest",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font={"color": "darkgray"},
+        autosize=True,
+                        )
+
+    return fig
