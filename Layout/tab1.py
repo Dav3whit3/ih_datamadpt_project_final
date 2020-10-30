@@ -131,7 +131,7 @@ def build_quick_stats_panel():
                         id="summoner-name-input",
                         placeholder="Select summoner name",
                         type='text',
-                        value="Saikki Kusuo",
+                        value="",
                         size="15",
                         style={"width": "100%", "margin-top": "10px"}
                     ),
@@ -196,17 +196,13 @@ def build_quick_stats_panel():
                                    ),
                     dcc.Slider(
                         id="gauge-slider",
-                        #max=frames['timestamp'].max(),
-                        #min=frames['timestamp'].min(),
-                        # step=None,
                         vertical=False,
                         disabled=False,
-                        updatemode='drag'
+                        updatemode='drag',
+
                     ),
                     daq.Gauge(
                         id="progress-gauge",
-                        #max=frames['timestamp'].max(),
-                        #min=frames['timestamp'].min(),
                         units="Min",
                         label="Progress (mins)",
                         color="#27A73E",
@@ -240,7 +236,17 @@ def build_top_panel():
                         children=[
                             dcc.Graph(
                                 id="player-stats",
+                                figure=go.Figure(
+                                    {
+                                        #"data": [{}],
 
+                                        "layout": {
+                                            "paper_bgcolor": "rgba(0,0,0,0)",
+                                            "plot_bgcolor": "rgba(0,0,0,0)",
+                                        },
+                                        "style": {"padding": "5px"}
+                                    }
+                                ),
                             ),
                         ],
                     ),
@@ -266,7 +272,7 @@ def build_top_panel():
                             daq.LEDDisplay(
                                 id='red-team',
                                 label="Red Team",
-                                value=6,
+                                value=0,
                                 size=50,
                                 style={"display": "inline-block",
                                        "paper_bgcolor": "rgba(0,0,0,0)",
@@ -278,7 +284,7 @@ def build_top_panel():
                             daq.LEDDisplay(
                                 id='blue-team',
                                 label="Blue Team",
-                                value=6,
+                                value=0,
                                 size=50,
                                 style={"display": "inline-block",
                                        "margin-bottom": "20px"},
@@ -297,7 +303,7 @@ def build_top_panel():
                         children=[
                             daq.LEDDisplay(
                                 id='red-team-towers',
-                                value=6,
+                                value=0,
                                 size=20,
                                 style={"display": "inline-block",
                                        "paper_bgcolor": "rgba(0,0,0,0)",
@@ -308,7 +314,7 @@ def build_top_panel():
                             ),
                             daq.LEDDisplay(
                                 id='blue-team-towers',
-                                value=6,
+                                value=0,
                                 size=20,
                                 style={"display": "inline-block"},
                                 color="white",

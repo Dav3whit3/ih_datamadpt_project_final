@@ -108,7 +108,7 @@ def update_match_list(accid):
 )
 def update_user_info(input1):
     df = pd.DataFrame(input1)
-    df = df.head(5)[['gameId', 'Date', 'role', 'champion', 'queue']]
+    df = df.head(5)[['Date', 'role', 'champion', 'queue', 'gameId']]
 
     return dash_table.DataTable(
         id="first-five-match-list",
@@ -118,7 +118,7 @@ def update_user_info(input1):
         style_data={'color': '#ffffff'},
         style_filter={'color': '#ffffff'},
         row_selectable="single",
-        selected_rows=[1],
+        selected_rows=[],
         page_size=5,
 
         style_cell={"background-color": "#242a3b",
@@ -290,15 +290,18 @@ def update_gold_progress_chart(minute, golddiff):
                              y=df['team100golddiff'],
                              fill='tozeroy',
                              name='Blue team',
-                             line_color='#2E86C1',
+                             line={
+                                 "color": "#2E86C1",
+                                  }
                              )
                   )
-
     fig.add_trace(go.Scatter(x=df['timestamp'],
                              y=df['team200golddiff'],
                              fill='tozeroy',
                              name="Red team",
-                             line_color='#E74C3C',
+                             line={
+                                 "color": "#E74C3C",
+                                  }
                              )
                   )
     fig["layout"] = dict(
@@ -327,10 +330,54 @@ def update_gold_progress_chart(minute, golddiff):
             "showline": True,
             "mirror": True,
             "linecolor": 'black',
-            "zeroline": True,
+            "zeroline": False,
             "autorange": True,
             "titlefont": {"color": "darkgray"},
-        })
+
+        },
+        shapes=[
+            {
+                "type": "line",
+                "xref": "x",
+                "yref": "y",
+                "x0": 0,
+                "y0": 1000,
+                "x1": df['timestamp'].max(),
+                "y1": 1000,
+                "line": {"color": "#91dfd2", "width": 2, "dash": "dot"},
+            },
+            {
+                "type": "line",
+                "xref": "x",
+                "yref": "y",
+                "x0": 0,
+                "y0": -1000,
+                "x1": df['timestamp'].max(),
+                "y1": -1000,
+                "line": {"color": "#91dfd2", "width": 2, "dash": "dot"},
+            },
+            {
+                "type": "line",
+                "xref": "x",
+                "yref": "y",
+                "x0": 0,
+                "y0": 3000,
+                "x1": df['timestamp'].max(),
+                "y1": 3000,
+                "line": {"color": "#f4d44d", "width": 2, "dash": "dot"},
+            },
+            {
+                "type": "line",
+                "xref": "x",
+                "yref": "y",
+                "x0": 0,
+                "y0": -3000,
+                "x1": df['timestamp'].max(),
+                "y1": -3000,
+                "line": {"color": "#f4d44d", "width": 2, "dash": "dot"},
+            },
+        ]
+    )
 
     return fig
 
@@ -366,7 +413,7 @@ def update_player_stats_table(minute, stats):
                    font=dict(color='white', size=20),
                    fill_color="rgba(0,0,0,0)",
                    line_color="rgba(0,0,0,0)",
-                   height=30,
+                   height=32,
                    ),
         columnwidth=[3, 2, 1, 1, 1]
                                 )
