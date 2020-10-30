@@ -134,6 +134,20 @@ def update_user_info(input1):
     )
 
 
+# Date picker callback
+@app.callback(
+    [Output('my-date-picker-single', "max_date_allowed"),
+     Output('my-date-picker-single', "min_date_allowed")],
+    [Input("match-list", "data")]
+)
+def update_datepicker(matchlist):
+    df = pd.DataFrame(matchlist)
+    maximum = df['Date2'].max()
+    minimum = df['Date2'].min()
+
+    return maximum, minimum
+
+
 # Store Game ID callback -----------------------------------------------------------------------------------------------
 @app.callback(
     Output('game-id', 'data'),
@@ -329,7 +343,6 @@ def update_gold_progress_chart(minute, golddiff):
 )
 def update_player_stats_table(minute, stats):
 
-    
     df = pd.DataFrame(stats)
     df = df[df['timestamp'] == minute]
     df.rename(columns={'summonerName': 'Summoner',
@@ -396,4 +409,4 @@ def update_score(minute, df):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050)
+    app.run_server(debug=True, dev_tools_ui=False, port=8050)

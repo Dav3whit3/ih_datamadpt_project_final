@@ -160,8 +160,6 @@ def build_quick_stats_panel():
                         children=[
                             dcc.DatePickerSingle(
                                 id='my-date-picker-single',
-                                #min_date_allowed=match_list['Date2'].min(),
-                                #max_date_allowed=match_list['Date2'].max(),
                                 initial_visible_month=date.today(),
                                 clearable=False,
                                 day_size=50,
