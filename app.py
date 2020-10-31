@@ -116,7 +116,7 @@ def update_user_info(matchlist, date):
         id="first-five-match-list",
         columns=[{"name": c, "id": c} for c in df.columns],
         data=df.to_dict('records'),
-        style_table={'height': '300px', 'overflowX': 'auto'},
+        style_table={'height': '250px', 'overflowX': 'auto'},
         page_action='none',
         style_data={'color': '#ffffff'},
         style_filter={'color': '#ffffff'},
@@ -336,7 +336,7 @@ def update_gold_progress_chart(minute, golddiff):
             "showline": True,
             "mirror": True,
             "linecolor": 'black',
-            "zeroline": False,
+            "zeroline": True,
             "autorange": True,
             "titlefont": {"color": "darkgray"},
 

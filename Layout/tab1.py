@@ -189,7 +189,7 @@ def build_quick_stats_panel():
                         units="Min",
                         label="Progress (mins)",
                         color="#27A73E",
-                        size=100,
+                        size=40,
                         value=0,
                         showCurrentValue=True,  # default size 200 pixel
 
