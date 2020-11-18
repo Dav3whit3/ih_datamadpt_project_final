@@ -21,7 +21,7 @@ champions = aq.championsid(key)
 queues = aq.get_queuesid(key)
 
 app.layout = html.Div(
-    id="big-app-container",deactivate
+    id="big-app-container",
     children=[
         dcc.Store(id="summoner-name"),
         dcc.Store(id="account-id"),
