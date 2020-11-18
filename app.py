@@ -21,7 +21,7 @@ champions = aq.championsid(key)
 queues = aq.get_queuesid(key)
 
 app.layout = html.Div(
-    id="big-app-container",
+    id="big-app-container",deactivate
     children=[
         dcc.Store(id="summoner-name"),
         dcc.Store(id="account-id"),
@@ -464,4 +464,4 @@ def update_score(minute, df):
 
 # Running the server
 if __name__ == "__main__":
-    app.run_server(debug=True, dev_tools_ui=False, port=8050)
+    app.run_server(debug=True, dev_tools_ui=False) #port=8050)

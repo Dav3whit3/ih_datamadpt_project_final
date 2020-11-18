@@ -20,9 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b2bcb8c-c341-4828-abd7-3bd172f07d34" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ih_datamadpt_project_final.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ih_datamadpt_project_final.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Layout/tab1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Layout/tab1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +50,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -177,12 +180,13 @@
     </state>
     <state width="1848" height="372" key="GridCell.Tab.1.right/0.21.1920.1059/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602331727004" />
     <state width="1078" height="344" key="GridCell.Tab.1.right/0.27.1920.1011/1920.0.1920.1080@0.27.1920.1011" timestamp="1604013118552" />
-    <state x="456" y="166" width="1180" height="786" key="SettingsEditor" timestamp="1603807519046">
-      <screen x="0" y="27" width="1920" height="1011" />
+    <state x="124" y="199" width="900" height="975" key="SettingsEditor" timestamp="1605722411637">
+      <screen x="0" y="27" width="1024" height="1253" />
     </state>
     <state x="2376" y="149" width="1007" height="737" key="SettingsEditor/0.21.1920.1007/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602092942332" />
     <state x="2376" y="149" key="SettingsEditor/0.21.1920.1059/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602331641943" />
     <state x="456" y="166" width="1180" height="786" key="SettingsEditor/0.27.1920.1011/1920.0.1920.1080@0.27.1920.1011" timestamp="1603807519046" />
+    <state x="124" y="199" width="900" height="975" key="SettingsEditor/1024.0.1920.1080/0.27.1024.1253/2944.0.2560.1080@0.27.1024.1253" timestamp="1605722411637" />
     <state x="2376" y="149" key="SettingsEditor/50.27.1870.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602865057577" />
     <state x="100" y="265" width="890" height="542" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1604002022432">
       <screen x="0" y="27" width="1920" height="1011" />
