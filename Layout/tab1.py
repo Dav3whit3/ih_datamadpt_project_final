@@ -30,36 +30,6 @@ def build_banner():
     )
 
 
-def build_tabs():
-    return html.Div(
-        id="tabs",
-        className="tabs",
-        children=[
-            dcc.Tabs(
-                id="app-tabs",
-                value="tab2",
-                className="custom-tabs",
-                children=[
-                    dcc.Tab(
-                        id="Specs-tab",
-                        label="Live game data (In Development)",
-                        value="tab1",
-                        className="custom-tab",
-                        selected_className="custom-tab--selected",
-                    ),
-                    dcc.Tab(
-                        id="Control-chart-tab",
-                        label="Match history data",
-                        value="tab2",
-                        className="custom-tab",
-                        selected_className="custom-tab--selected",
-                    ),
-                ],
-            )
-        ],
-    )
-
-
 def generate_modal():
     return html.Div(
         id="markdown",
@@ -114,11 +84,11 @@ def build_quick_stats_panel():
                         id="summoner-name-input",
                         placeholder="Select summoner name",
                         type='text',
-                        value="",
+                        value="Saikki Kusuo",
                         size="15",
                         style={"width": "100%", "margin-top": "10px"}
                     ),
-                    html.Button('Submit',
+                    html.Button('Search player',
                                 id='submit-val',
                                 style={"text-align": "center",
                                        "margin-bottom": "10px",
@@ -182,17 +152,16 @@ def build_quick_stats_panel():
                         vertical=False,
                         disabled=False,
                         updatemode='drag',
+                        step=1,
 
                     ),
-                    daq.Gauge(
-                        id="progress-gauge",
-                        units="Min",
-                        label="Progress (mins)",
-                        color="#27A73E",
-                        size=40,
-                        value=0,
-                        showCurrentValue=True,  # default size 200 pixel
-
+                    daq.GraduatedBar(
+                        id='game-progress',
+                        label="Game progress",
+                        value=5,
+                        min=0,
+                        max=100,
+                        showCurrentValue=True
                     ),
                 ],
             ),
@@ -221,11 +190,17 @@ def build_top_panel():
                                 id="player-stats",
                                 figure=go.Figure(
                                     {
-                                        #"data": [{}],
-
                                         "layout": {
                                             "paper_bgcolor": "rgba(0,0,0,0)",
                                             "plot_bgcolor": "rgba(0,0,0,0)",
+                                            "xaxis": {
+                                                'showgrid': False,
+                                                "zeroline": False,
+                                            },
+                                            "yaxis": {
+                                                'showgrid': False,
+                                                "zeroline": False,
+                                            }
                                         },
                                         "style": {"padding": "5px"}
                                     }

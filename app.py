@@ -39,41 +39,24 @@ app.layout = html.Div(
         html.Div(
             id="app-container",
             children=[
-                t1.build_tabs(),
-                # Main app
-                html.Div(id="app-content"),
+                html.Div(id="app-content",
+                         children=[
+                             html.Div(
+                                 id="status-container",
+                                 children=[
+                                     t1.build_quick_stats_panel(),
+                                     html.Div(
+                                         id="graphs-container",
+                                         children=[t1.build_top_panel(), t1.build_chart_panel()],
+                                     ),
+                                 ],
+                             ),
+                         ]),
             ],
         ),
         t1.generate_modal(),
     ],
 )
-
-
-# Tab switch callback --------------------------------------------------------------------------------------------------
-@app.callback(
-    Output("app-content", "children"),
-    [Input("app-tabs", "value")],
-)
-def render_tab_content(tab_switch):
-    if tab_switch == "tab1":
-        return [html.Div(
-            id="set-specs-intro-container",
-            className='twelve columns',
-            children=html.P("Currently developing."))
-        ]
-    return (
-        html.Div(
-            id="status-container",
-            children=[
-                t1.build_quick_stats_panel(),
-                html.Div(
-                    id="graphs-container",
-                    children=[t1.build_top_panel(), t1.build_chart_panel()],
-                ),
-            ],
-        ),
-    )
-
 
 # Store summoner name & acc ID callback --------------------------------------------------------------------------------
 @app.callback(
@@ -258,21 +241,24 @@ def update_player_stats_table(frames):
 @app.callback(
     [Output("gauge-slider", "max"),
      Output("gauge-slider", "min"),
-     Output("progress-gauge", "max"),
-     Output("progress-gauge", "min")],
+     Output("game-progress", "max"),
+     Output("game-progress", "min"),
+     Output("gauge-slider", "marks")
+     ],
     [Input("frames", "data")]
 )
 def update_components_values(frames):
     df = pd.DataFrame(frames)
     maximum = df['timestamp'].max()
     minimum = df['timestamp'].min()
+    marks = {value: f"{value}'" for value in df['timestamp'].unique()}
 
-    return maximum, minimum, maximum, minimum
+    return maximum, minimum, maximum, minimum, marks
 
 
 # Gauge callback--------------------------------------------------------------------------------------------------------
 @app.callback(
-    Output("progress-gauge", "value"),
+    Output("game-progress", "value"),
     [Input("gauge-slider", "value")]
 )
 def update_gauge(value):
