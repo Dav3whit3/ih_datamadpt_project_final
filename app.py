@@ -61,7 +61,10 @@ app.layout = html.Div(
 # Store summoner name & acc ID callback --------------------------------------------------------------------------------
 @app.callback(
     [Output("summoner-name", "data"),
-     Output("account-id", "data")],
+     Output("account-id", "data"),
+     Output("recent-games", "children"),
+     Output("match-timeline", "children")
+     ],
     [Input("submit-val", "n_clicks")],
     [State("summoner-name-input", "value")]
 )
@@ -69,7 +72,7 @@ def store_summoner_name(n_clicks, value):
     summoner_info = aq.get_summoner_info(value, key)
     accid = summoner_info['accountId'][0]
 
-    return value, accid
+    return value, accid, t1.buildtable(), t1.buildtimeline()[0]
 
 
 # Store full match list callback ---------------------------------------------------------------------------------------
@@ -138,7 +141,8 @@ def update_datepicker(matchlist):
 # Store Game ID callback -----------------------------------------------------------------------------------------------
 @app.callback(
     [Output('game-id', 'data'),
-     Output("gauge-slider", "value")],
+     Output("gauge-slider", "value"),
+     ],
     [Input('first-five-match-list', 'data'),
      Input('first-five-match-list', 'selected_rows')])
 def update_gameid(data, selected_rows):

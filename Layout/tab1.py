@@ -63,80 +63,86 @@ def build_quick_stats_panel():
                 ],
             ),
             html.Div(
+                id="recent-games",
                 style={"width": "100%",
                        "display": "inline-block",
                        "text-align": "center"},
-                children=[
-                    html.P("Pick one of the recent games"),
-                    dcc.Loading(children=html.Div(id="user_info_container")),
-                    html.Div(
-                        style={"width": "100%",
-                               "display": "inline-block",
-                               "text-align": "center",
-                               "margin-top": "30px"},
-                        children=[
-                            html.P("or searh games by date"),
-                            dcc.DatePickerSingle(
-                                id='my-date-picker-single',
-                                initial_visible_month=date.today(),
-                                clearable=False,
-                                day_size=50,
-                                placeholder="Select a date",
-                                display_format='Y/M/D',
-                                date=date.today(),
-                                style={
-                                    "width": "100%",
-                                }
-                            ),
-                        ]
-                    )
-                    ,
-                ]
             ),
             html.Div(
-                id="card-2",
+                id="match-timeline",
                 style={"display": "inline-block",
                        "text-align": "center",
                        "margin-bottom": "10px",
                        "margin-top": "25px"},
-                children=[
-                    html.P("Match Timeline"),
-                    daq.StopButton(id="stop-button",
-                                   size=160,
-                                   n_clicks=0,
-                                   style={"text-align": "center",
-                                          "margin-bottom": "20px",
-                                          "color": "#ffffff",
-                                          "margin-top": "0px",
-                                          "margin-left": "30%",
-                                          "margin-right": "auto",
-                                          }
-                                   ),
-                    dcc.Slider(
-                        id="gauge-slider",
-                        vertical=False,
-                        disabled=False,
-                        updatemode='drag',
-                        step=1,
-
-                    ),
-                    daq.GraduatedBar(
-                        id='game-progress',
-                        label="Game progress",
-                        value=0,
-                        min=0,
-                        max=10,
-                        color={
-                            "gradient": True,
-                            "ranges": {
-                                "green": [0, 100],
-                            }
-                        }
-                    ),
-                ],
-            ),
+            )
         ],
     )
+
+
+def buildtable():
+    return [
+        html.P("Pick one of the recent games"),
+        dcc.Loading(children=html.Div(id="user_info_container")),
+        html.Div(
+            style={"width": "100%",
+                   "display": "inline-block",
+                   "text-align": "center",
+                   "margin-top": "30px"},
+            children=[
+                html.P("or searh games by date"),
+                dcc.DatePickerSingle(
+                    id='my-date-picker-single',
+                    initial_visible_month=date.today(),
+                    clearable=False,
+                    day_size=50,
+                    placeholder="Select a date",
+                    display_format='Y/M/D',
+                    date=date.today(),
+                    style={
+                        "width": "100%",
+                    }
+                ),
+            ]
+        )
+    ]
+
+
+def buildtimeline():
+    return [
+        html.P("Match Timeline"),
+        daq.StopButton(id="stop-button",
+                       size=160,
+                       n_clicks=0,
+                       style={"text-align": "center",
+                              "margin-bottom": "20px",
+                              "color": "#ffffff",
+                              "margin-top": "0px",
+                              "margin-left": "20%",
+                              "margin-right": "auto",
+                              }
+                       ),
+        dcc.Slider(
+            id="gauge-slider",
+            vertical=False,
+            disabled=False,
+            updatemode='drag',
+            step=1,
+
+        ),
+        daq.GraduatedBar(
+            id='game-progress',
+            label="Game progress",
+            value=0,
+            min=0,
+            max=10,
+            color={
+                "gradient": True,
+                "ranges": {
+                    "green": [0, 100],
+                }
+            }
+        ),
+    ],
 
 
 def generate_section_banner(title):
