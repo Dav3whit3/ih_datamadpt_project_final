@@ -57,7 +57,7 @@ def build_quick_stats_panel():
                                 style={"text-align": "center",
                                        "margin-bottom": "10px",
                                        "color": "#ffffff",
-                                       "margin-top": "10px",
+                                       "margin-top": "30px",
                                        "margin-left": "20%",
                                        "margin-right": "20%"}),
 
@@ -68,6 +68,7 @@ def build_quick_stats_panel():
                        "display": "inline-block",
                        "text-align": "center"},
                 children=[
+                    html.P("Pick one of the recent games"),
                     dcc.Loading(children=html.Div(id="user_info_container")),
                     html.Div(
                         style={"width": "100%",
@@ -75,6 +76,7 @@ def build_quick_stats_panel():
                                "text-align": "center",
                                "margin-top": "30px"},
                         children=[
+                            html.P("or searh games by date"),
                             dcc.DatePickerSingle(
                                 id='my-date-picker-single',
                                 initial_visible_month=date.today(),
@@ -106,7 +108,7 @@ def build_quick_stats_panel():
                                    style={"text-align": "center",
                                           "margin-bottom": "20px",
                                           "color": "#ffffff",
-                                          "margin-top": "10px",
+                                          "margin-top": "0px",
                                           "margin-left": "30%",
                                           "margin-right": "auto",
                                           }

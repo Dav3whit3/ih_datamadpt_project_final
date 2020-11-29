@@ -22,7 +22,6 @@
     <list default="true" id="5b2bcb8c-c341-4828-abd7-3bd172f07d34" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Layout/tab1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Layout/tab1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,6 +188,10 @@
     <state x="124" y="199" key="SettingsEditor/1024.0.1920.1080/2944.0.2560.1080/0.27.1024.1253@0.27.1024.1253" timestamp="1606147060315" />
     <state x="124" y="370" key="SettingsEditor/1024.198.2560.1080/3584.0.1920.1080/0.225.1024.1056@0.225.1024.1056" timestamp="1606673911724" />
     <state x="2376" y="149" key="SettingsEditor/50.27.1870.1053/1920.0.1920.1080@1920.0.1920.1080" timestamp="1602865057577" />
+    <state x="107" y="377" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1606677374210">
+      <screen x="0" y="225" width="1024" height="1056" />
+    </state>
+    <state x="107" y="377" width="800" height="535" key="Vcs.Push.Dialog.v2/1024.198.2560.1080/3584.0.1920.1080/0.225.1024.1056@0.225.1024.1056" timestamp="1606677374210" />
     <state x="100" y="265" width="890" height="542" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1604002022432">
       <screen x="0" y="27" width="1920" height="1011" />
     </state>
