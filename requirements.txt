@@ -5,6 +5,3 @@ gunicorn
 numpy
 pandas
 requests
-
-
-

@@ -60,7 +60,6 @@ def build_quick_stats_panel():
                                        "margin-top": "30px",
                                        "margin-left": "20%",
                                        "margin-right": "20%"}),
-
                 ],
             ),
             html.Div(
