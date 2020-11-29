@@ -30,42 +30,6 @@ def build_banner():
     )
 
 
-def generate_modal():
-    return html.Div(
-        id="markdown",
-        className="modal",
-        children=(
-            html.Div(
-                id="markdown-container",
-                className="markdown-container",
-                children=[
-                    html.Div(
-                        className="close-container",
-                        children=html.Button(
-                            "Close",
-                            id="markdown_close",
-                            n_clicks=0,
-                            className="closeButton",
-                        ),
-                    ),
-                    html.Div(
-                        className="markdown-text",
-                        children=dcc.Markdown(
-                            children=(
-                                """
-                        ###### What is this mock app about?
-                        This is a dashboard for monitoring real-time process quality along manufacture production line.
-                        """
-
-                            )
-                        ),
-                    ),
-                ],
-            )
-        ),
-    )
-
-
 def build_quick_stats_panel():
     return html.Div(
         id="quick-stats",
@@ -143,7 +107,7 @@ def build_quick_stats_panel():
                                           "margin-bottom": "20px",
                                           "color": "#ffffff",
                                           "margin-top": "10px",
-                                          "margin-left": "35%",
+                                          "margin-left": "30%",
                                           "margin-right": "auto",
                                           }
                                    ),
@@ -158,10 +122,15 @@ def build_quick_stats_panel():
                     daq.GraduatedBar(
                         id='game-progress',
                         label="Game progress",
-                        value=5,
+                        value=0,
                         min=0,
-                        max=100,
-                        showCurrentValue=True
+                        max=10,
+                        color={
+                            "gradient": True,
+                            "ranges": {
+                                "green": [0, 100],
+                            }
+                        }
                     ),
                 ],
             ),

@@ -54,7 +54,7 @@ app.layout = html.Div(
                          ]),
             ],
         ),
-        t1.generate_modal(),
+        #t1.generate_modal(),
     ],
 )
 
@@ -88,7 +88,8 @@ def update_match_list(accid):
 @app.callback(
     Output("user_info_container", "children"),
     [Input("match-list", "data"),
-     Input("my-date-picker-single", "date")]
+     Input("my-date-picker-single", "date")
+     ]
 )
 def update_user_info(matchlist, date):
     df = pd.DataFrame(matchlist)
@@ -243,7 +244,7 @@ def update_player_stats_table(frames):
      Output("gauge-slider", "min"),
      Output("game-progress", "max"),
      Output("game-progress", "min"),
-     Output("gauge-slider", "marks")
+     #Output("gauge-slider", "marks")
      ],
     [Input("frames", "data")]
 )
@@ -253,7 +254,7 @@ def update_components_values(frames):
     minimum = df['timestamp'].min()
     marks = {value: f"{value}'" for value in df['timestamp'].unique()}
 
-    return maximum, minimum, maximum, minimum, marks
+    return maximum, minimum, maximum, minimum, #marks
 
 
 # Gauge callback--------------------------------------------------------------------------------------------------------
@@ -307,8 +308,9 @@ def update_gold_progress_chart(minute, golddiff):
         autosize=True,
         xaxis={
             "zeroline": False,
-            "showgrid": True,
-            "nticks": 5,
+            "showgrid": False,
+            "tick0": 0,
+            "dtick": 1,
             "title": "Time (mins)",
             "showline": True,
             "mirror": True,
